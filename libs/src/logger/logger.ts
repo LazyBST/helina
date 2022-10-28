@@ -19,7 +19,7 @@ export class Logger {
 
   private colormap: any = {
     debug: colors.grey,
-    info: colors.cyan, // (msg: string):string => { return msg; },
+    info: colors.cyan, 
     warn: colors.magenta,
     error: colors.red,
   };
@@ -31,11 +31,13 @@ export class Logger {
         return info;
       })(),
       // winston.format.colorize({ all: true }),
-      winston.format.timestamp({ format: 'MMM DD hh:mm:ss' }),
+      winston.format.timestamp({ format: 'YYYY-MM-DD HH:mm:ss' }),
       winston.format.label({ label: name }),
-      winston.format.printf((info) => {
-        return this.logprint(info);
-      }),
+      this.myFormat,
+      winston.format.simple(),
+      // winston.format.printf((info) => {
+      //   return this.logprint(info);
+      // }),
     );
     this.options.transports = [new winston.transports.Console()];
 
@@ -77,19 +79,20 @@ export class Logger {
     return this.options;
   }
 
-  debug(format: any, ...params: any[]): void {
-    this.logger.debug([format].concat(params));
+  debug(message: any): void {
+    this.logger.debug(JSON.stringify(message));
   }
 
-  info(format: any, ...params: any[]): void {
-    this.logger.info([format].concat(params));
+  info(message: any): void {
+    this.logger.info(JSON.stringify(message));
   }
 
-  warn(format: any, ...params: any[]): void {
-    this.logger.warn([format].concat(params));
+  warn(message: any): void {
+    this.logger.warn(JSON.stringify(message));
   }
 
-  error(format: any, ...params: any[]): void {
-    this.logger.error([format].concat(params));
+  error(message: any): void {
+    this.logger.error(JSON.stringify(message));
+
   }
 }

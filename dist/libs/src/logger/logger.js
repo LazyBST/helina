@@ -46,9 +46,7 @@ class Logger {
         this.options.format = winston.format.combine(winston.format((info) => {
             info.level = info.level.toUpperCase();
             return info;
-        })(), winston.format.timestamp({ format: 'MMM DD hh:mm:ss' }), winston.format.label({ label: name }), winston.format.printf((info) => {
-            return this.logprint(info);
-        }));
+        })(), winston.format.timestamp({ format: 'YYYY-MM-DD HH:mm:ss' }), winston.format.label({ label: name }), this.myFormat, winston.format.simple());
         this.options.transports = [new winston.transports.Console()];
         this.logger = winston.createLogger(this.options);
         this.name = name;
@@ -75,18 +73,22 @@ class Logger {
     get logopts() {
         return this.options;
     }
-    debug(format, ...params) {
-        this.logger.debug([format].concat(params));
+    debug(message) {
+        this.logger.debug(JSON.stringify(message));
     }
-    info(format, ...params) {
-        this.logger.info([format].concat(params));
+    info(message) {
+        this.logger.info(JSON.stringify(message));
     }
-    warn(format, ...params) {
-        this.logger.warn([format].concat(params));
+    warn(message) {
+        this.logger.warn(JSON.stringify(message));
     }
-    error(format, ...params) {
-        this.logger.error([format].concat(params));
+    error(message) {
+        this.logger.error(JSON.stringify(message));
     }
 }
 exports.Logger = Logger;
+const logger = Logger.getLogger('MyModule');
+logger.info({ 'Test': 'logger' });
+logger.info('Test');
+logger.info([{ 'Test': 'logger' }]);
 //# sourceMappingURL=logger.js.map
