@@ -3,6 +3,7 @@ import config from '@config/index';
 import { ConfigModule } from '@nestjs/config';
 import { DiscoveryModule } from '@nestjs/core';
 import { BaseValidator } from './validator';
+import { KafkaModule } from './kafka/kafka.module';
 
 @Global()
 @Module({
@@ -13,6 +14,7 @@ import { BaseValidator } from './validator';
       expandVariables: true,
       load: config,
     }),
+    KafkaModule,
   ],
   providers: [BaseValidator],
   exports: [],
