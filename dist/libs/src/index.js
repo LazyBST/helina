@@ -21,5 +21,4 @@ __exportStar(require("./constants"), exports);
 __exportStar(require("./interfaces"), exports);
 __exportStar(require("./rest"), exports);
 __exportStar(require("./exceptions"), exports);
-__exportStar(require("./logger"), exports);
 //# sourceMappingURL=index.js.map

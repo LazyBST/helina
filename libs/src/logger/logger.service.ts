@@ -1,9 +1,11 @@
+import { Injectable } from '@nestjs/common';
 import * as winston from 'winston';
 import * as colors from 'colors/safe';
 import { LEVEL } from 'triple-beam';
 import * as util from 'util';
 
-export class Logger {
+@Injectable()
+export class LoggerService {
   myFormat: any = winston.format.printf((info) => {
     return `${info.timestamp} [${info.label}] ${info.level}: ${info.message}`;
   });
@@ -19,7 +21,7 @@ export class Logger {
 
   private colormap: any = {
     debug: colors.grey,
-    info: colors.cyan, 
+    info: colors.cyan,
     warn: colors.magenta,
     error: colors.red,
   };
@@ -45,7 +47,7 @@ export class Logger {
     this.name = name;
   }
 
-  static toString(msgs: any): string {
+  toString(msgs: any): string {
     if (typeof msgs === 'string') {
       return msgs;
     }
@@ -66,13 +68,9 @@ export class Logger {
       info.label,
     )}] ${colorize(info.level)}: `;
 
-    logmsg += colorize(Logger.toString(info.message));
+    logmsg += colorize(this.toString(info.message));
 
     return logmsg;
-  }
-
-  public static getLogger(name: string): Logger {
-    return new Logger(name);
   }
 
   get logopts(): any {
@@ -93,6 +91,5 @@ export class Logger {
 
   error(message: any): void {
     this.logger.error(JSON.stringify(message));
-
   }
 }

@@ -15,6 +15,12 @@ var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (
 }) : function(o, v) {
     o["default"] = v;
 });
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
 var __importStar = (this && this.__importStar) || function (mod) {
     if (mod && mod.__esModule) return mod;
     var result = {};
@@ -22,13 +28,17 @@ var __importStar = (this && this.__importStar) || function (mod) {
     __setModuleDefault(result, mod);
     return result;
 };
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.Logger = void 0;
+exports.LoggerService = void 0;
+const common_1 = require("@nestjs/common");
 const winston = __importStar(require("winston"));
 const colors = __importStar(require("colors/safe"));
 const triple_beam_1 = require("triple-beam");
 const util = __importStar(require("util"));
-class Logger {
+let LoggerService = class LoggerService {
     constructor(name) {
         this.myFormat = winston.format.printf((info) => {
             return `${info.timestamp} [${info.label}] ${info.level}: ${info.message}`;
@@ -46,14 +56,12 @@ class Logger {
         this.options.format = winston.format.combine(winston.format((info) => {
             info.level = info.level.toUpperCase();
             return info;
-        })(), winston.format.timestamp({ format: 'MMM DD hh:mm:ss' }), winston.format.label({ label: name }), winston.format.printf((info) => {
-            return this.logprint(info);
-        }));
+        })(), winston.format.timestamp({ format: 'YYYY-MM-DD HH:mm:ss' }), winston.format.label({ label: name }), this.myFormat, winston.format.simple());
         this.options.transports = [new winston.transports.Console()];
         this.logger = winston.createLogger(this.options);
         this.name = name;
     }
-    static toString(msgs) {
+    toString(msgs) {
         if (typeof msgs === 'string') {
             return msgs;
         }
@@ -66,27 +74,28 @@ class Logger {
     logprint(info) {
         const colorize = this.colormap[info[triple_beam_1.LEVEL]];
         let logmsg = `${colors.yellow(info.timestamp)} [${colors.green(info.label)}] ${colorize(info.level)}: `;
-        logmsg += colorize(Logger.toString(info.message));
+        logmsg += colorize(this.toString(info.message));
         return logmsg;
-    }
-    static getLogger(name) {
-        return new Logger(name);
     }
     get logopts() {
         return this.options;
     }
-    debug(format, ...params) {
-        this.logger.debug([format].concat(params));
+    debug(message) {
+        this.logger.debug(JSON.stringify(message));
     }
-    info(format, ...params) {
-        this.logger.info([format].concat(params));
+    info(message) {
+        this.logger.info(JSON.stringify(message));
     }
-    warn(format, ...params) {
-        this.logger.warn([format].concat(params));
+    warn(message) {
+        this.logger.warn(JSON.stringify(message));
     }
-    error(format, ...params) {
-        this.logger.error([format].concat(params));
+    error(message) {
+        this.logger.error(JSON.stringify(message));
     }
-}
-exports.Logger = Logger;
-//# sourceMappingURL=logger.js.map
+};
+LoggerService = __decorate([
+    (0, common_1.Injectable)(),
+    __metadata("design:paramtypes", [String])
+], LoggerService);
+exports.LoggerService = LoggerService;
+//# sourceMappingURL=logger.service.js.map
