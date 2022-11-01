@@ -87,8 +87,4 @@ class Logger {
     }
 }
 exports.Logger = Logger;
-const logger = Logger.getLogger('MyModule');
-logger.info({ 'Test': 'logger' });
-logger.info('Test');
-logger.info([{ 'Test': 'logger' }]);
 //# sourceMappingURL=logger.js.map
