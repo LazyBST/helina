@@ -32,8 +32,19 @@ class KafkajsProducer {
     constructor(topic, brokers, configService) {
         this.topic = topic;
         this.configService = configService;
+        const kafkaMechnism = this.configService.get('KF_MECHANISM');
+        const kafkaUsername = this.configService.get('KF_USERNAME');
+        const kafkaPassword = this.configService.get('KF_PASSWORD');
+        if (kafkaMechnism !== 'plain') {
+            return;
+        }
         this.kafka = new kafkajs_1.Kafka({
             brokers,
+            sasl: {
+                mechanism: kafkaMechnism,
+                username: kafkaUsername,
+                password: kafkaPassword,
+            },
         });
         this.producer = this.kafka.producer();
         this.logger = new logger_1.Logger(topic);

@@ -15,8 +15,23 @@ export class KafkajsProducer implements IProducer {
     brokers: string[],
     private readonly configService: ConfigService,
   ) {
+    const kafkaMechnism = this.configService.get<string>('KF_MECHANISM');
+    const kafkaUsername = this.configService.get<string>('KF_USERNAME');
+    const kafkaPassword = this.configService.get<string>('KF_PASSWORD');
+
+    if (kafkaMechnism !== 'plain') {
+      // TODO: log error and return
+
+      return;
+    }
+
     this.kafka = new Kafka({
       brokers,
+      sasl: {
+        mechanism: kafkaMechnism,
+        username: kafkaUsername,
+        password: kafkaPassword,
+      },
     });
     this.producer = this.kafka.producer();
     this.logger = new Logger(topic);
