@@ -9,7 +9,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.LoggerModule = void 0;
 const common_1 = require("@nestjs/common");
 const logger_service_1 = require("./logger.service");
-let LoggerModule = class LoggerModule {
+const logger_module_definition_1 = require("./logger.module-definition");
+let LoggerModule = class LoggerModule extends logger_module_definition_1.ConfigurableModuleClass {
 };
 LoggerModule = __decorate([
     (0, common_1.Module)({

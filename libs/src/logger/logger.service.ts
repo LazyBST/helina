@@ -1,8 +1,10 @@
-import { Injectable } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 import * as winston from 'winston';
 import * as colors from 'colors/safe';
 import { LEVEL } from 'triple-beam';
 import * as util from 'util';
+import { MODULE_OPTIONS_TOKEN } from './logger.module-definition';
+import { LoggerModuleOptions } from '../interfaces';
 
 @Injectable()
 export class LoggerService {
@@ -26,7 +28,10 @@ export class LoggerService {
     error: colors.red,
   };
 
-  constructor(name: string) {
+  constructor(
+    @Inject(MODULE_OPTIONS_TOKEN) private loggerOptions: LoggerModuleOptions,
+  ) {
+    const { appName: name } = this.loggerOptions;
     this.options.format = winston.format.combine(
       winston.format((info) => {
         info.level = info.level.toUpperCase();
