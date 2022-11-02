@@ -12,18 +12,18 @@ export class KafkajsProducer implements IProducer {
 
   constructor(
     private readonly topic: string,
-    broker: string,
+    brokers: string[],
     private readonly configService: ConfigService,
   ) {
     this.kafka = new Kafka({
-      brokers: [broker],
+      brokers,
     });
     this.producer = this.kafka.producer();
     this.logger = new Logger(topic);
   }
 
   async produce(messages: Message[]) {
-    const retryCount = this.configService.get('KF_RETRIES');
+    const retryCount = this.configService.get('KF_PRODUCER_RETRIES');
     retry(
       async () => this.producer.send({ topic: this.topic, messages: messages }),
       {

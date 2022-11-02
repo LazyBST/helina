@@ -29,11 +29,24 @@ const kafkajs_1 = require("kafkajs");
 const retry = __importStar(require("async-retry"));
 const sleep_1 = require("../../utils/sleep");
 class KafkajsConsumer {
-    constructor(producer, topics, config, broker, configService) {
+    constructor(producer, topics, config, brokers, configService) {
         this.producer = producer;
         this.topics = topics;
         this.configService = configService;
-        this.kafka = new kafkajs_1.Kafka({ brokers: [broker] });
+        const kafkaMechnism = this.configService.get('KF_MECHANISM');
+        const kafkaUsername = this.configService.get('KF_USERNAME');
+        const kafkaPassword = this.configService.get('KF_PASSWORD');
+        if (kafkaMechnism !== 'plain') {
+            return;
+        }
+        this.kafka = new kafkajs_1.Kafka({
+            brokers,
+            sasl: {
+                mechanism: kafkaMechnism,
+                username: kafkaUsername,
+                password: kafkaPassword,
+            },
+        });
         this.consumer = this.kafka.consumer(config);
         this.logger = new logger_1.Logger(`${topics.topics}-${config.groupId}`);
     }
@@ -45,9 +58,10 @@ class KafkajsConsumer {
             autoCommit: false,
             eachMessage: async ({ topic, message, partition }) => {
                 this.logger.debug(`Processing message partition: ${partition}`);
+                const retryCount = this.configService.get('KF_CONSUMER_RETRIES');
                 try {
                     await retry(async () => onMessage(message), {
-                        retries: 3,
+                        retries: retryCount,
                         onRetry: (error, attempt) => this.logger.error(`Error consuming message, executing retry ${attempt}/3 :: ${error}`),
                     });
                     messageProccessedCount++;

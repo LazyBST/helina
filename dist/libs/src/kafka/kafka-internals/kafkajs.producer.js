@@ -29,17 +29,17 @@ const kafkajs_1 = require("kafkajs");
 const sleep_1 = require("../../utils/sleep");
 const retry = __importStar(require("async-retry"));
 class KafkajsProducer {
-    constructor(topic, broker, configService) {
+    constructor(topic, brokers, configService) {
         this.topic = topic;
         this.configService = configService;
         this.kafka = new kafkajs_1.Kafka({
-            brokers: [broker],
+            brokers,
         });
         this.producer = this.kafka.producer();
         this.logger = new logger_1.Logger(topic);
     }
     async produce(messages) {
-        const retryCount = this.configService.get('KF_RETRIES');
+        const retryCount = this.configService.get('KF_PRODUCER_RETRIES');
         retry(async () => this.producer.send({ topic: this.topic, messages: messages }), {
             retries: retryCount,
             onRetry: async (error, attempt) => {

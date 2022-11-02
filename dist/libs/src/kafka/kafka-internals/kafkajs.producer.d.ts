@@ -7,7 +7,7 @@ export declare class KafkajsProducer implements IProducer {
     private readonly kafka;
     private readonly producer;
     private readonly logger;
-    constructor(topic: string, broker: string, configService: ConfigService);
+    constructor(topic: string, brokers: string[], configService: ConfigService);
     produce(messages: Message[]): Promise<void>;
     connect(): Promise<void>;
     disconnect(): Promise<void>;

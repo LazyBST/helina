@@ -20,7 +20,7 @@ export class ProducerService implements OnApplicationShutdown {
     if (!producer) {
       producer = new KafkajsProducer(
         topic,
-        this.configService.get('KAFKA_BROKER'),
+        this.configService.get<string>('KAFKA_BROKER').split(','),
         this.configService,
       );
       await producer.connect();

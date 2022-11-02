@@ -21,7 +21,7 @@ let ConsumerService = class ConsumerService {
         this.consumers = [];
     }
     async consume({ topics, config, onMessage }) {
-        const consumer = new kafkajs_consumer_1.KafkajsConsumer(this.ProducerService, topics, config, this.configService.get('KF_BROKER'), this.configService);
+        const consumer = new kafkajs_consumer_1.KafkajsConsumer(this.ProducerService, topics, config, this.configService.get('KF_BROKER').split(','), this.configService);
         await consumer.connect();
         await consumer.consume(onMessage);
         this.consumers.push(consumer);

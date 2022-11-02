@@ -25,10 +25,27 @@ export class KafkajsConsumer implements IConsumer {
     private readonly producer: ProducerService,
     private readonly topics: ConsumerSubscribeTopics,
     config: ConsumerConfig,
-    broker: string,
+    brokers: string[],
     private readonly configService: ConfigService,
   ) {
-    this.kafka = new Kafka({ brokers: [broker] });
+    const kafkaMechnism = this.configService.get<string>('KF_MECHANISM');
+    const kafkaUsername = this.configService.get<string>('KF_USERNAME');
+    const kafkaPassword = this.configService.get<string>('KF_PASSWORD');
+
+    if (kafkaMechnism !== 'plain') {
+      // TODO: log error and return
+
+      return;
+    }
+
+    this.kafka = new Kafka({
+      brokers,
+      sasl: {
+        mechanism: kafkaMechnism,
+        username: kafkaUsername,
+        password: kafkaPassword,
+      },
+    });
     this.consumer = this.kafka.consumer(config);
     this.logger = new Logger(`${topics.topics}-${config.groupId}`);
   }
@@ -41,9 +58,10 @@ export class KafkajsConsumer implements IConsumer {
       autoCommit: false,
       eachMessage: async ({ topic, message, partition }) => {
         this.logger.debug(`Processing message partition: ${partition}`);
+        const retryCount = this.configService.get('KF_CONSUMER_RETRIES');
         try {
           await retry(async () => onMessage(message), {
-            retries: 3,
+            retries: retryCount,
             onRetry: (error, attempt) =>
               this.logger.error(
                 `Error consuming message, executing retry ${attempt}/3 :: ${error}`,

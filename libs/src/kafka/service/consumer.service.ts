@@ -18,7 +18,7 @@ export class ConsumerService implements OnApplicationShutdown {
       this.ProducerService,
       topics,
       config,
-      this.configService.get('KF_BROKER'),
+      this.configService.get<string>('KF_BROKER').split(','),
       this.configService,
     );
     await consumer.connect();

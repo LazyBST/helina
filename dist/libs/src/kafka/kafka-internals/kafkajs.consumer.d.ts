@@ -11,7 +11,7 @@ export declare class KafkajsConsumer implements IConsumer {
     private readonly logger;
     commitMessageCount: number;
     commitTimeMs: number;
-    constructor(producer: ProducerService, topics: ConsumerSubscribeTopics, config: ConsumerConfig, broker: string, configService: ConfigService);
+    constructor(producer: ProducerService, topics: ConsumerSubscribeTopics, config: ConsumerConfig, brokers: string[], configService: ConfigService);
     consume(onMessage: (message: KafkaMessage) => Promise<void>): Promise<void>;
     private addMessageToDlq;
     connect(): Promise<void>;
