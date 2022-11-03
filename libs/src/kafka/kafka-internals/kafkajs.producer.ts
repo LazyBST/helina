@@ -1,7 +1,7 @@
 import { Kafka, Message, Producer } from 'kafkajs';
 import { sleep } from '../../utils/sleep';
 import { IProducer } from '../../interfaces';
-import * as retry from 'async-retry';
+import retry from 'async-retry';
 import { ConfigService } from '@nestjs/config';
 import { LoggerService } from '../../logger';
 

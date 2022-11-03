@@ -5,7 +5,7 @@ import {
   Kafka,
   KafkaMessage,
 } from 'kafkajs';
-import * as retry from 'async-retry';
+import retry from 'async-retry';
 import { sleep } from '../../utils/sleep';
 import { IConsumer } from '../../interfaces';
 import { ProducerService } from '../service/producer.service';
