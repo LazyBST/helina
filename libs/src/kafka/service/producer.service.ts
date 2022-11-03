@@ -3,12 +3,16 @@ import { ConfigService } from '@nestjs/config';
 import { Message } from 'kafkajs';
 import { KafkajsProducer } from '../kafka-internals/kafkajs.producer';
 import { IProducer } from '../../interfaces';
+import { LoggerService } from '@libs/logger';
 
 @Injectable()
 export class ProducerService implements OnApplicationShutdown {
   private readonly producers = new Map<string, IProducer>();
 
-  constructor(private readonly configService: ConfigService) {}
+  constructor(
+    private readonly configService: ConfigService,
+    private readonly logger: LoggerService,
+  ) {}
 
   async produce(topic: string, message: Message[]) {
     const producer = await this.getProducer(topic);
@@ -19,9 +23,10 @@ export class ProducerService implements OnApplicationShutdown {
     let producer = this.producers.get(topic);
     if (!producer) {
       producer = new KafkajsProducer(
+        this.configService,
+        this.logger,
         topic,
         this.configService.get<string>('KF_BROKER').split(','),
-        this.configService,
       );
       await producer.connect();
       this.producers.set(topic, producer);

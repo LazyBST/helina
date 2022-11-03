@@ -14,14 +14,17 @@ const common_1 = require("@nestjs/common");
 const config_1 = require("@nestjs/config");
 const kafkajs_consumer_1 = require("../kafka-internals/kafkajs.consumer");
 const producer_service_1 = require("../service/producer.service");
+const logger_1 = require("../../logger");
 let ConsumerService = class ConsumerService {
-    constructor(configService, ProducerService) {
+    constructor(configService, ProducerService, logger) {
         this.configService = configService;
         this.ProducerService = ProducerService;
+        this.logger = logger;
         this.consumers = [];
     }
     async consume({ topics, config, onMessage }) {
-        const consumer = new kafkajs_consumer_1.KafkajsConsumer(this.ProducerService, topics, config, this.configService.get('KF_BROKER').split(','), this.configService);
+        const brokers = this.configService.get('KF_BROKER').split(',');
+        const consumer = new kafkajs_consumer_1.KafkajsConsumer(this.ProducerService, this.configService, this.logger, topics, config, brokers);
         await consumer.connect();
         await consumer.consume(onMessage);
         this.consumers.push(consumer);
@@ -35,7 +38,8 @@ let ConsumerService = class ConsumerService {
 ConsumerService = __decorate([
     (0, common_1.Injectable)(),
     __metadata("design:paramtypes", [config_1.ConfigService,
-        producer_service_1.ProducerService])
+        producer_service_1.ProducerService,
+        logger_1.LoggerService])
 ], ConsumerService);
 exports.ConsumerService = ConsumerService;
 //# sourceMappingURL=consumer.service.js.map

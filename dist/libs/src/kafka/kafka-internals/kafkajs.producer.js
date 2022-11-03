@@ -24,35 +24,42 @@ var __importStar = (this && this.__importStar) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.KafkajsProducer = void 0;
-const logger_1 = require("../../logger");
 const kafkajs_1 = require("kafkajs");
 const sleep_1 = require("../../utils/sleep");
 const retry = __importStar(require("async-retry"));
 class KafkajsProducer {
-    constructor(topic, brokers, configService) {
-        this.topic = topic;
+    constructor(configService, logger, topic, brokers) {
         this.configService = configService;
+        this.logger = logger;
+        this.topic = topic;
+        this.brokers = brokers;
         const kafkaMechnism = this.configService.get('KF_MECHANISM');
         const kafkaUsername = this.configService.get('KF_USERNAME');
         const kafkaPassword = this.configService.get('KF_PASSWORD');
         if (kafkaMechnism !== 'plain') {
+            this.logger.error(`Only PLAIN mechanism is supported for kafka`);
             return;
         }
-        this.kafka = new kafkajs_1.Kafka({
-            brokers,
-            ssl: true,
-            sasl: {
-                mechanism: kafkaMechnism,
-                username: kafkaUsername,
-                password: kafkaPassword,
-            },
-        });
-        this.producer = this.kafka.producer();
-        this.logger = new logger_1.Logger(topic);
+        try {
+            this.kafka = new kafkajs_1.Kafka({
+                brokers: this.brokers,
+                ssl: true,
+                sasl: {
+                    mechanism: kafkaMechnism,
+                    username: kafkaUsername,
+                    password: kafkaPassword,
+                },
+            });
+            this.producer = this.kafka.producer();
+        }
+        catch (err) {
+            this.logger.error(`Error creating Kafka producer :: ${err}`);
+            return;
+        }
     }
     async produce(messages) {
         const retryCount = this.configService.get('KF_PRODUCER_RETRIES');
-        retry(async () => this.producer.send({ topic: this.topic, messages: messages }), {
+        retry(async () => this.producer.send({ topic: this.topic, messages }), {
             retries: retryCount,
             onRetry: async (error, attempt) => {
                 this.logger.error(`Error producing message, executing retry ${attempt}/${retryCount} :: ${error}`);

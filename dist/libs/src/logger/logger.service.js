@@ -98,9 +98,6 @@ let LoggerService = class LoggerService {
     error(message) {
         this.logger.error(JSON.stringify(message));
     }
-}
-exports.Logger = Logger;
-//# sourceMappingURL=logger.js.map
 };
 LoggerService = __decorate([
     (0, common_1.Injectable)(),

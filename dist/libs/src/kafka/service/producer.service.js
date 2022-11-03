@@ -13,9 +13,11 @@ exports.ProducerService = void 0;
 const common_1 = require("@nestjs/common");
 const config_1 = require("@nestjs/config");
 const kafkajs_producer_1 = require("../kafka-internals/kafkajs.producer");
+const logger_1 = require("../../logger");
 let ProducerService = class ProducerService {
-    constructor(configService) {
+    constructor(configService, logger) {
         this.configService = configService;
+        this.logger = logger;
         this.producers = new Map();
     }
     async produce(topic, message) {
@@ -25,7 +27,7 @@ let ProducerService = class ProducerService {
     async getProducer(topic) {
         let producer = this.producers.get(topic);
         if (!producer) {
-            producer = new kafkajs_producer_1.KafkajsProducer(topic, this.configService.get('KF_BROKER').split(','), this.configService);
+            producer = new kafkajs_producer_1.KafkajsProducer(this.configService, this.logger, topic, this.configService.get('KF_BROKER').split(','));
             await producer.connect();
             this.producers.set(topic, producer);
         }
@@ -39,7 +41,8 @@ let ProducerService = class ProducerService {
 };
 ProducerService = __decorate([
     (0, common_1.Injectable)(),
-    __metadata("design:paramtypes", [config_1.ConfigService])
+    __metadata("design:paramtypes", [config_1.ConfigService,
+        logger_1.LoggerService])
 ], ProducerService);
 exports.ProducerService = ProducerService;
 //# sourceMappingURL=producer.service.js.map

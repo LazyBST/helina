@@ -1,59 +1,71 @@
-import { Logger } from '../../logger';
 import {
   Consumer,
   ConsumerConfig,
   ConsumerSubscribeTopics,
   Kafka,
   KafkaMessage,
-  Producer,
+  logCreator,
+  logLevel,
 } from 'kafkajs';
 import * as retry from 'async-retry';
 import { sleep } from '../../utils/sleep';
 import { IConsumer } from '../../interfaces';
 import { ProducerService } from '../service/producer.service';
 import { ConfigService } from '@nestjs/config';
+import { LoggerService } from '@libs/logger';
 
 export class KafkajsConsumer implements IConsumer {
   private readonly kafka: Kafka;
   private readonly consumer: Consumer;
-  private readonly logger: Logger;
 
-  commitMessageCount: number;
-  commitTimeMs: number;
+  private messageProccessedCount: number;
+  private processingStartTime: Date;
+  private readonly messageComitTimeLimit: number;
+  private readonly messageComitCountLimit: number;
 
   constructor(
     private readonly producer: ProducerService,
-    private readonly topics: ConsumerSubscribeTopics,
-    config: ConsumerConfig,
-    brokers: string[],
     private readonly configService: ConfigService,
+    private readonly logger: LoggerService,
+    private readonly topics: ConsumerSubscribeTopics,
+    private readonly config: ConsumerConfig,
+    private readonly brokers: string[],
   ) {
+    this.messageProccessedCount = 0;
+    this.processingStartTime = new Date();
+
+    this.messageComitTimeLimit = this.configService.get('KF_COMMIT_TIME_MS');
+    this.messageComitCountLimit = this.configService.get(
+      'KF_COMMIT_MESSAGE_COUNT',
+    );
+
     const kafkaMechnism = this.configService.get<string>('KF_MECHANISM');
     const kafkaUsername = this.configService.get<string>('KF_USERNAME');
     const kafkaPassword = this.configService.get<string>('KF_PASSWORD');
 
     if (kafkaMechnism !== 'plain') {
-      // TODO: log error and return
-
+      this.logger.error(`Only PLAIN mechanism is supported for kafka`);
       return;
     }
 
-    this.kafka = new Kafka({
-      brokers,
-      ssl: true,
-      sasl: {
-        mechanism: kafkaMechnism,
-        username: kafkaUsername,
-        password: kafkaPassword,
-      },
-    });
-    this.consumer = this.kafka.consumer(config);
-    this.logger = new Logger(`${topics.topics}-${config.groupId}`);
+    try {
+      this.kafka = new Kafka({
+        brokers: this.brokers,
+        ssl: true,
+        sasl: {
+          mechanism: kafkaMechnism,
+          username: kafkaUsername,
+          password: kafkaPassword,
+        },
+      });
+      this.consumer = this.kafka.consumer(this.config);
+    } catch (err) {
+      this.logger.error(`Error creating Kafka consumer :: ${err}`);
+      return;
+    }
   }
 
   async consume(onMessage: (message: KafkaMessage) => Promise<void>) {
-    let messageProccessedCount = 0;
-    let processingStartTime = new Date();
     await this.consumer.subscribe(this.topics);
     await this.consumer.run({
       autoCommit: false,
@@ -69,20 +81,26 @@ export class KafkajsConsumer implements IConsumer {
               ),
           });
 
-          messageProccessedCount++;
+          this.messageProccessedCount++;
 
           const timeInterval =
-            new Date().getTime() - processingStartTime.getTime();
+            new Date().getTime() - this.processingStartTime.getTime();
 
           if (
-            messageProccessedCount >= this.commitMessageCount ||
-            timeInterval >= this.commitTimeMs
+            this.messageProccessedCount >= this.messageComitCountLimit ||
+            timeInterval >= this.messageComitTimeLimit
           ) {
+            this.logger.info(
+              `Commit at ${this.messageProccessedCount} messages and timeInterval ${timeInterval}`,
+            );
             await this.commit(
               topic,
               partition,
               (Number(message.offset) + 1).toString(),
             );
+
+            this.messageProccessedCount = 0;
+            this.processingStartTime = new Date();
           }
         } catch (err) {
           this.logger.error(
