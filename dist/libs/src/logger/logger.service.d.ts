@@ -1,14 +1,15 @@
 import * as winston from 'winston';
-export declare class Logger {
+import { LoggerModuleOptions } from '../interfaces';
+export declare class LoggerService {
+    private loggerOptions;
     myFormat: any;
     options: winston.LoggerOptions;
     logger: winston.Logger;
     private name;
     private colormap;
-    constructor(name: string);
-    static toString(msgs: any): string;
+    constructor(loggerOptions: LoggerModuleOptions);
+    toString(msgs: any): string;
     logprint(info: any): string;
-    static getLogger(name: string): Logger;
     get logopts(): any;
     debug(message: any): void;
     info(message: any): void;
