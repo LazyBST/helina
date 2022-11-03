@@ -1,7 +1,7 @@
 import { OnApplicationShutdown } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { Message } from 'kafkajs';
-import { LoggerService } from '@libs/logger';
+import { LoggerService } from '../../logger';
 export declare class ProducerService implements OnApplicationShutdown {
     private readonly configService;
     private readonly logger;

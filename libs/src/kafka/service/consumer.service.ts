@@ -3,7 +3,7 @@ import { ConfigService } from '@nestjs/config';
 import { KafkajsConsumer } from '../kafka-internals/kafkajs.consumer';
 import { KafkajsConsumerOptions, IConsumer } from '../../interfaces';
 import { ProducerService } from '../service/producer.service';
-import { LoggerService } from '@libs/logger';
+import { LoggerService } from '../../logger';
 
 @Injectable()
 export class ConsumerService implements OnApplicationShutdown {

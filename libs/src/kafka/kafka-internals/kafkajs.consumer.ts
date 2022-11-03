@@ -4,15 +4,13 @@ import {
   ConsumerSubscribeTopics,
   Kafka,
   KafkaMessage,
-  logCreator,
-  logLevel,
 } from 'kafkajs';
 import * as retry from 'async-retry';
 import { sleep } from '../../utils/sleep';
 import { IConsumer } from '../../interfaces';
 import { ProducerService } from '../service/producer.service';
 import { ConfigService } from '@nestjs/config';
-import { LoggerService } from '@libs/logger';
+import { LoggerService } from '../../logger';
 
 export class KafkajsConsumer implements IConsumer {
   private readonly kafka: Kafka;

@@ -3,7 +3,7 @@ import { sleep } from '../../utils/sleep';
 import { IProducer } from '../../interfaces';
 import * as retry from 'async-retry';
 import { ConfigService } from '@nestjs/config';
-import { LoggerService } from '@libs/logger';
+import { LoggerService } from '../../logger';
 
 export class KafkajsProducer implements IProducer {
   private readonly kafka: Kafka;

@@ -2,7 +2,7 @@ import { ConsumerConfig, ConsumerSubscribeTopics, KafkaMessage } from 'kafkajs';
 import { IConsumer } from '../../interfaces';
 import { ProducerService } from '../service/producer.service';
 import { ConfigService } from '@nestjs/config';
-import { LoggerService } from '@libs/logger';
+import { LoggerService } from '../../logger';
 export declare class KafkajsConsumer implements IConsumer {
     private readonly producer;
     private readonly configService;
