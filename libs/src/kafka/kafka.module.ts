@@ -5,8 +5,6 @@ import { ConsumerService } from './service/consumer.service';
 import { ProducerService } from './service/producer.service';
 
 @Module({
-  // TODO: test if this solve resolving in client app
-  imports: [ConfigModule, LoggerModule],
   providers: [ProducerService, ConsumerService],
   exports: [ProducerService, ConsumerService],
 })

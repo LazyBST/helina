@@ -8,15 +8,12 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.KafkaModule = void 0;
 const common_1 = require("@nestjs/common");
-const config_1 = require("@nestjs/config");
-const logger_1 = require("../logger");
 const consumer_service_1 = require("./service/consumer.service");
 const producer_service_1 = require("./service/producer.service");
 let KafkaModule = class KafkaModule {
 };
 KafkaModule = __decorate([
     (0, common_1.Module)({
-        imports: [config_1.ConfigModule, logger_1.LoggerModule],
         providers: [producer_service_1.ProducerService, consumer_service_1.ConsumerService],
         exports: [producer_service_1.ProducerService, consumer_service_1.ConsumerService],
     })
