@@ -75,6 +75,24 @@ class Collection {
     sortBy(arr, key) {
         return (0, lodash_1.orderBy)(arr, [key], ['asc']);
     }
+    sql_query_string_filter(payload) {
+        let query_string = '(';
+        let outer_count = 0;
+        for (const item of payload) {
+            let inner_count = 0;
+            for (const [key, value] of Object.entries(item)) {
+                inner_count += 1;
+                query_string += `${key}=${value}`;
+                if (Object.keys(item).length != inner_count)
+                    query_string += ' AND ';
+            }
+            outer_count += 1;
+            if (payload.length != outer_count)
+                query_string += ') OR (';
+        }
+        query_string += ')';
+        return query_string;
+    }
 }
 exports.Collection = Collection;
 //# sourceMappingURL=collection.js.map

@@ -18,4 +18,5 @@ export declare class Collection<T = any> {
     each(cb: GenericFunction): void;
     sortByDesc<T>(arr: T[], key: string): T[];
     sortBy<T>(arr: T[], key: string): T[];
+    sql_query_string_filter<T>(payload: Array<any>): string;
 }
