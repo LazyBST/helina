@@ -40,6 +40,7 @@ export class KafkajsConsumer implements IConsumer {
 
     this.kafka = new Kafka({
       brokers,
+      ssl: true,
       sasl: {
         mechanism: kafkaMechnism,
         username: kafkaUsername,
@@ -87,14 +88,15 @@ export class KafkajsConsumer implements IConsumer {
           this.logger.error(
             `Error consuming message. Adding to dead letter queue :: ${err}`,
           );
-          await this.addMessageToDlq(message);
+          await this.addMessageToDlq([message]);
         }
       },
     });
   }
 
-  private async addMessageToDlq(message: KafkaMessage) {
-    await this.producer.produce('Error_topic', message);
+  private async addMessageToDlq(message: KafkaMessage[]) {
+    const errorTopic = this.configService.get<string>('KF_ERROR_TOPIC');
+    await this.producer.produce(errorTopic, message);
   }
 
   async connect() {

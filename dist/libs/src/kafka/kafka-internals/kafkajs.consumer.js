@@ -41,6 +41,7 @@ class KafkajsConsumer {
         }
         this.kafka = new kafkajs_1.Kafka({
             brokers,
+            ssl: true,
             sasl: {
                 mechanism: kafkaMechnism,
                 username: kafkaUsername,
@@ -73,13 +74,14 @@ class KafkajsConsumer {
                 }
                 catch (err) {
                     this.logger.error(`Error consuming message. Adding to dead letter queue :: ${err}`);
-                    await this.addMessageToDlq(message);
+                    await this.addMessageToDlq([message]);
                 }
             },
         });
     }
     async addMessageToDlq(message) {
-        await this.producer.produce('Error_topic', message);
+        const errorTopic = this.configService.get('KF_ERROR_TOPIC');
+        await this.producer.produce(errorTopic, message);
     }
     async connect() {
         try {

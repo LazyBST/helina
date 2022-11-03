@@ -40,6 +40,7 @@ class KafkajsProducer {
         }
         this.kafka = new kafkajs_1.Kafka({
             brokers,
+            ssl: true,
             sasl: {
                 mechanism: kafkaMechnism,
                 username: kafkaUsername,

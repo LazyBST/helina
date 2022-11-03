@@ -25,7 +25,7 @@ let ProducerService = class ProducerService {
     async getProducer(topic) {
         let producer = this.producers.get(topic);
         if (!producer) {
-            producer = new kafkajs_producer_1.KafkajsProducer(topic, this.configService.get('KAFKA_BROKER').split(','), this.configService);
+            producer = new kafkajs_producer_1.KafkajsProducer(topic, this.configService.get('KF_BROKER').split(','), this.configService);
             await producer.connect();
             this.producers.set(topic, producer);
         }

@@ -10,7 +10,7 @@ export class ProducerService implements OnApplicationShutdown {
 
   constructor(private readonly configService: ConfigService) {}
 
-  async produce(topic: string, message: Message) {
+  async produce(topic: string, message: Message[]) {
     const producer = await this.getProducer(topic);
     await producer.produce(message);
   }
@@ -20,7 +20,7 @@ export class ProducerService implements OnApplicationShutdown {
     if (!producer) {
       producer = new KafkajsProducer(
         topic,
-        this.configService.get<string>('KAFKA_BROKER').split(','),
+        this.configService.get<string>('KF_BROKER').split(','),
         this.configService,
       );
       await producer.connect();

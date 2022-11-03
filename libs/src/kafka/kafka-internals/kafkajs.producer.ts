@@ -27,6 +27,7 @@ export class KafkajsProducer implements IProducer {
 
     this.kafka = new Kafka({
       brokers,
+      ssl: true,
       sasl: {
         mechanism: kafkaMechnism,
         username: kafkaUsername,
