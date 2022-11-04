@@ -19,4 +19,8 @@ export declare class Collection<T = any> {
     sortByDesc<T>(arr: T[], key: string): T[];
     sortBy<T>(arr: T[], key: string): T[];
     sql_query_string_filter<T>(payload: Array<any>): string;
+    to_string<T>(list: Array<any>): string;
+    sql_rls_query_string(rls_payload: {
+        [k: string]: any;
+    }): string;
 }
