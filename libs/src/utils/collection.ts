@@ -93,4 +93,52 @@ export class Collection<T = any> {
   sortBy<T>(arr: T[], key: string): T[] {
     return orderBy(arr, [key], ['asc']);
   }
+
+  sql_query_string_filter<T>(payload: Array<any>): string {
+    let query_string = '('
+    let outer_count = 0
+    for (const item of payload) {
+      let inner_count = 0
+      for (const [key,value] of Object.entries(item)) {
+        inner_count +=1
+        query_string += `${key}=${value}`
+        if(Object.keys(item).length != inner_count)
+          query_string += ' AND '
+      }
+      outer_count +=1
+      if(payload.length != outer_count)
+        query_string += ') OR ('
+      
+    }
+    query_string += ')'
+    return query_string
+  }
+
+  to_string<T>(list: Array<any>): string {
+    return list.toString()
+  }
+
+  sql_rls_query_string (rls_payload:{[k: string]: any}): string {
+    let rls_query_string  = ''
+    for (const [_,entity] of Object.entries(rls_payload)) {
+      let outer_count = 0
+      rls_query_string += '('
+      for (const [rls_attr_key,rls_attr_value] of Object.entries<any[]>(entity)) {
+        outer_count += 1
+        let inner_count = 0
+        for(const item of rls_attr_value) {
+          inner_count += 1
+          rls_query_string += rls_attr_key
+          rls_query_string += '='
+          rls_query_string +=item
+          if(inner_count != rls_attr_value.length)
+            rls_query_string += ' OR '
+        }
+      if(outer_count != Object.keys(entity).length)
+        rls_query_string += ') AND ('
+      }
+    rls_query_string += ')'
+    }
+    return rls_query_string
+  }
 }

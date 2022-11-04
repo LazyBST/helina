@@ -1,6 +1,6 @@
 import { Injectable, OnApplicationShutdown } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import { Message } from 'kafkajs';
+import { Message, Producer } from 'kafkajs';
 import { KafkajsProducer } from '../kafka-internals/kafkajs.producer';
 import { IProducer } from '../../interfaces';
 import { LoggerService } from '../../logger';
@@ -19,7 +19,7 @@ export class ProducerService implements OnApplicationShutdown {
     await producer.produce(message);
   }
 
-  private async getProducer(topic: string) {
+  private async getProducer(topic: string): Promise<IProducer> {
     let producer = this.producers.get(topic);
     if (!producer) {
       producer = new KafkajsProducer(
