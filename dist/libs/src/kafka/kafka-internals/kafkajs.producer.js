@@ -39,7 +39,7 @@ class KafkajsProducer {
     }
     async produce(messages) {
         const retryCount = this.configService.get('KF_PRODUCER_RETRIES');
-        (0, async_retry_1.default)(async () => this.producer.send({ topic: this.topic, messages }), {
+        return (0, async_retry_1.default)(async () => this.producer.send({ topic: this.topic, messages }), {
             retries: retryCount,
             onRetry: async (error, attempt) => {
                 this.logger.error(`Error producing message, executing retry ${attempt}/${retryCount} :: ${error}`);

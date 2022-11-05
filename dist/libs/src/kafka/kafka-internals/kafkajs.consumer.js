@@ -53,7 +53,7 @@ class KafkajsConsumer {
                 try {
                     await (0, async_retry_1.default)(async () => onMessage(message), {
                         retries: retryCount,
-                        onRetry: (error, attempt) => this.logger.error(`Error consuming message, executing retry ${attempt}/3 :: ${error}`),
+                        onRetry: (error, attempt) => this.logger.error(`Error consuming message, executing retry ${attempt}/${retryCount} :: ${error}`),
                     });
                     this.messageProccessedCount++;
                     const timeInterval = new Date().getTime() - this.processingStartTime.getTime();

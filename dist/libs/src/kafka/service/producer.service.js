@@ -22,7 +22,7 @@ let ProducerService = class ProducerService {
     }
     async produce(topic, message) {
         const producer = await this.getProducer(topic);
-        await producer.produce(message);
+        return await producer.produce(message);
     }
     async getProducer(topic) {
         let producer = this.producers.get(topic);

@@ -1,4 +1,4 @@
-import { Kafka, Message, Producer } from 'kafkajs';
+import { Kafka, Message, Producer, RecordMetadata } from 'kafkajs';
 import { sleep } from '../../utils/sleep';
 import { IProducer } from '../../interfaces';
 import retry from 'async-retry';
@@ -41,16 +41,19 @@ export class KafkajsProducer implements IProducer {
     }
   }
 
-  async produce(messages: Message[]) {
-    const retryCount = this.configService.get('KF_PRODUCER_RETRIES');
-    retry(async () => this.producer.send({ topic: this.topic, messages }), {
-      retries: retryCount,
-      onRetry: async (error, attempt) => {
-        this.logger.error(
-          `Error producing message, executing retry ${attempt}/${retryCount} :: ${error}`,
-        );
+  async produce(messages: Message[]): Promise<RecordMetadata[]> {
+    const retryCount = this.configService.get<number>('KF_PRODUCER_RETRIES');
+    return retry(
+      async () => this.producer.send({ topic: this.topic, messages }),
+      {
+        retries: retryCount,
+        onRetry: async (error, attempt) => {
+          this.logger.error(
+            `Error producing message, executing retry ${attempt}/${retryCount} :: ${error}`,
+          );
+        },
       },
-    });
+    );
   }
 
   async connect() {

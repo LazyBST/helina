@@ -1,6 +1,6 @@
 import { Injectable, OnApplicationShutdown } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import { Message, Producer } from 'kafkajs';
+import { Message, RecordMetadata } from 'kafkajs';
 import { KafkajsProducer } from '../kafka-internals/kafkajs.producer';
 import { IProducer } from '../../interfaces';
 import { LoggerService } from '../../logger';
@@ -14,9 +14,9 @@ export class ProducerService implements OnApplicationShutdown {
     private readonly logger: LoggerService,
   ) {}
 
-  async produce(topic: string, message: Message[]) {
+  async produce(topic: string, message: Message[]): Promise<RecordMetadata[]> {
     const producer = await this.getProducer(topic);
-    await producer.produce(message);
+    return await producer.produce(message);
   }
 
   private async getProducer(topic: string): Promise<IProducer> {

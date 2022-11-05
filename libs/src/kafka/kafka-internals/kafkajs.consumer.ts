@@ -75,7 +75,7 @@ export class KafkajsConsumer implements IConsumer {
             retries: retryCount,
             onRetry: (error, attempt) =>
               this.logger.error(
-                `Error consuming message, executing retry ${attempt}/3 :: ${error}`,
+                `Error consuming message, executing retry ${attempt}/${retryCount} :: ${error}`,
               ),
           });
 
