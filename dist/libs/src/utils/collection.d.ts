@@ -23,4 +23,6 @@ export declare class Collection<T = any> {
     sql_rls_query_string(rls_payload: {
         [k: string]: any;
     }): string;
+    to_boolean(string_value: string | number): boolean | null;
+    string_to_number(string_value: string): Number;
 }
