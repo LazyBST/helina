@@ -22,4 +22,5 @@ __exportStar(require("./interfaces"), exports);
 __exportStar(require("./rest"), exports);
 __exportStar(require("./exceptions"), exports);
 __exportStar(require("./logger"), exports);
+__exportStar(require("./kafka"), exports);
 //# sourceMappingURL=index.js.map

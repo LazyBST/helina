@@ -15,6 +15,7 @@ const index_1 = __importDefault(require("../../config/index"));
 const config_1 = require("@nestjs/config");
 const core_1 = require("@nestjs/core");
 const validator_1 = require("./validator");
+const kafka_module_1 = require("./kafka/kafka.module");
 let HelinaModule = class HelinaModule {
 };
 HelinaModule = __decorate([
@@ -27,6 +28,7 @@ HelinaModule = __decorate([
                 expandVariables: true,
                 load: index_1.default,
             }),
+            kafka_module_1.KafkaModule,
         ],
         providers: [validator_1.BaseValidator],
         exports: [],
