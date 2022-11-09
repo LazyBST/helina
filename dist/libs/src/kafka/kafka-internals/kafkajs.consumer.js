@@ -1,11 +1,7 @@
 "use strict";
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.KafkajsConsumer = void 0;
 const kafkajs_1 = require("kafkajs");
-const async_retry_1 = __importDefault(require("async-retry"));
 const sleep_1 = require("../../utils/sleep");
 class KafkajsConsumer {
     constructor(producer, configService, logger, topics, config, brokers) {
@@ -49,12 +45,8 @@ class KafkajsConsumer {
             autoCommit: false,
             eachMessage: async ({ topic, message, partition }) => {
                 this.logger.debug(`Processing message partition: ${partition}`);
-                const retryCount = this.configService.get('KF_CONSUMER_RETRIES');
                 try {
-                    await (0, async_retry_1.default)(async () => onMessage(message), {
-                        retries: retryCount,
-                        onRetry: (error, attempt) => this.logger.error(`Error consuming message, executing retry ${attempt}/${retryCount} :: ${error}`),
-                    });
+                    await onMessage(message);
                     this.messageProccessedCount++;
                     const timeInterval = new Date().getTime() - this.processingStartTime.getTime();
                     if (this.messageProccessedCount >= this.messageComitCountLimit ||

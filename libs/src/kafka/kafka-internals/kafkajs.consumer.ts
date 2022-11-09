@@ -69,16 +69,8 @@ export class KafkajsConsumer implements IConsumer {
       autoCommit: false,
       eachMessage: async ({ topic, message, partition }) => {
         this.logger.debug(`Processing message partition: ${partition}`);
-        const retryCount = this.configService.get('KF_CONSUMER_RETRIES');
         try {
-          await retry(async () => onMessage(message), {
-            retries: retryCount,
-            onRetry: (error, attempt) =>
-              this.logger.error(
-                `Error consuming message, executing retry ${attempt}/${retryCount} :: ${error}`,
-              ),
-          });
-
+          await onMessage(message);
           this.messageProccessedCount++;
 
           const timeInterval =
