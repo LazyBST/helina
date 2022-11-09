@@ -75,7 +75,7 @@ class Collection {
     sortBy(arr, key) {
         return (0, lodash_1.orderBy)(arr, [key], ['asc']);
     }
-    sql_query_string_filter(payload) {
+    sqlQueryStringFilter(payload) {
         let query_string = '(';
         let outer_count = 0;
         for (const item of payload) {
@@ -93,10 +93,10 @@ class Collection {
         query_string += ')';
         return query_string;
     }
-    to_string(list) {
+    toString(list) {
         return list.toString();
     }
-    sql_rls_query_string(rls_payload) {
+    sqlRlsQueryString(rls_payload) {
         let rls_query_string = '';
         for (const [_, entity] of Object.entries(rls_payload)) {
             let outer_count = 0;
@@ -119,10 +119,10 @@ class Collection {
         }
         return rls_query_string;
     }
-    to_boolean(string_value) {
+    toBoolean(value) {
         var _a;
-        if (typeof (string_value) == 'string') {
-            switch ((_a = string_value === null || string_value === void 0 ? void 0 : string_value.toLowerCase()) === null || _a === void 0 ? void 0 : _a.trim()) {
+        if (typeof (value) === 'string') {
+            switch ((_a = value === null || value === void 0 ? void 0 : value.toLowerCase()) === null || _a === void 0 ? void 0 : _a.trim()) {
                 case "true":
                 case "yes":
                 case "1":
@@ -135,8 +135,8 @@ class Collection {
                     return null;
             }
         }
-        else if (typeof (string_value) == 'number') {
-            switch (string_value) {
+        else if (typeof (value) === 'number') {
+            switch (value) {
                 case 1:
                     return true;
                 case 0:
@@ -145,11 +145,14 @@ class Collection {
                     return null;
             }
         }
+        else if (typeof (value) === 'boolean') {
+            return value;
+        }
         else {
             return null;
         }
     }
-    string_to_number(string_value) {
+    stringToNumber(string_value) {
         return Number(string_value);
     }
 }
