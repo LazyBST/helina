@@ -18,11 +18,11 @@ export declare class Collection<T = any> {
     each(cb: GenericFunction): void;
     sortByDesc<T>(arr: T[], key: string): T[];
     sortBy<T>(arr: T[], key: string): T[];
-    sql_query_string_filter<T>(payload: Array<any>): string;
-    to_string<T>(list: Array<any>): string;
-    sql_rls_query_string(rls_payload: {
+    sqlQueryStringFilter<T>(payload: Array<any>): string;
+    toString<T>(list: Array<any>): string;
+    sqlRlsQueryString(rls_payload: {
         [k: string]: any;
     }): string;
-    to_boolean(string_value: string | number): boolean | null;
-    string_to_number(string_value: string): Number;
+    toBoolean(value: string | number | boolean): boolean | null;
+    stringToNumber(string_value: string): Number;
 }

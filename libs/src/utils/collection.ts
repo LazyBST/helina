@@ -94,7 +94,7 @@ export class Collection<T = any> {
     return orderBy(arr, [key], ['asc']);
   }
 
-  sql_query_string_filter<T>(payload: Array<any>): string {
+  sqlQueryStringFilter<T>(payload: Array<any>): string {
     let query_string = '('
     let outer_count = 0
     for (const item of payload) {
@@ -114,11 +114,11 @@ export class Collection<T = any> {
     return query_string
   }
 
-  to_string<T>(list: Array<any>): string {
+  toString<T>(list: Array<any>): string {
     return list.toString()
   }
 
-  sql_rls_query_string (rls_payload:{[k: string]: any}): string {
+  sqlRlsQueryString (rls_payload:{[k: string]: any}): string {
     let rls_query_string  = ''
     for (const [_,entity] of Object.entries(rls_payload)) {
       let outer_count = 0
@@ -142,9 +142,9 @@ export class Collection<T = any> {
     return rls_query_string
   }
 
-  to_boolean(string_value:string|number): boolean | null {
-    if (typeof(string_value) == 'string') {
-      switch(string_value?.toLowerCase()?.trim()) {
+  toBoolean(value:string|number|boolean): boolean | null {
+    if (typeof(value) === 'string') {
+      switch(value?.toLowerCase()?.trim()) {
         case "true": 
         case "yes": 
         case "1": 
@@ -158,8 +158,8 @@ export class Collection<T = any> {
         default: 
           return null
       }
-    } else if(typeof(string_value) == 'number') {
-      switch(string_value) { 
+    } else if(typeof(value) === 'number') {
+      switch(value) { 
         case 1: 
           return true
         case 0:
@@ -168,12 +168,15 @@ export class Collection<T = any> {
           return null
       }
     }
+    else if(typeof(value) === 'boolean') {
+      return value
+    }
     else {
       return null
     }
   }
 
-  string_to_number(string_value:string): Number {
+  stringToNumber(string_value:string): Number {
     return Number(string_value)
   }
 }
