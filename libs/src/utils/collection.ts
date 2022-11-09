@@ -141,4 +141,39 @@ export class Collection<T = any> {
     }
     return rls_query_string
   }
+
+  to_boolean(string_value:string|number): boolean | null {
+    if (typeof(string_value) == 'string') {
+      switch(string_value?.toLowerCase()?.trim()) {
+        case "true": 
+        case "yes": 
+        case "1": 
+          return true
+
+        case "false": 
+        case "no": 
+        case "0":
+          return false
+
+        default: 
+          return null
+      }
+    } else if(typeof(string_value) == 'number') {
+      switch(string_value) { 
+        case 1: 
+          return true
+        case 0:
+          return false
+        default: 
+          return null
+      }
+    }
+    else {
+      return null
+    }
+  }
+
+  string_to_number(string_value:string): Number {
+    return Number(string_value)
+  }
 }

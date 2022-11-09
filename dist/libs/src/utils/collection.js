@@ -119,6 +119,39 @@ class Collection {
         }
         return rls_query_string;
     }
+    to_boolean(string_value) {
+        var _a;
+        if (typeof (string_value) == 'string') {
+            switch ((_a = string_value === null || string_value === void 0 ? void 0 : string_value.toLowerCase()) === null || _a === void 0 ? void 0 : _a.trim()) {
+                case "true":
+                case "yes":
+                case "1":
+                    return true;
+                case "false":
+                case "no":
+                case "0":
+                    return false;
+                default:
+                    return null;
+            }
+        }
+        else if (typeof (string_value) == 'number') {
+            switch (string_value) {
+                case 1:
+                    return true;
+                case 0:
+                    return false;
+                default:
+                    return null;
+            }
+        }
+        else {
+            return null;
+        }
+    }
+    string_to_number(string_value) {
+        return Number(string_value);
+    }
 }
 exports.Collection = Collection;
 //# sourceMappingURL=collection.js.map
