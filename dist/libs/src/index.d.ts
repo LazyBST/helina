@@ -7,3 +7,4 @@ export * from './rest';
 export * from './exceptions';
 export * from './logger';
 export * from './kafka';
+export * from './redis';
