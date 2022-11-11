@@ -16,6 +16,7 @@ const config_1 = require("@nestjs/config");
 const core_1 = require("@nestjs/core");
 const validator_1 = require("./validator");
 const kafka_module_1 = require("./kafka/kafka.module");
+const redis_1 = require("./redis");
 let HelinaModule = class HelinaModule {
 };
 HelinaModule = __decorate([
@@ -30,7 +31,7 @@ HelinaModule = __decorate([
             }),
             kafka_module_1.KafkaModule,
         ],
-        providers: [validator_1.BaseValidator],
+        providers: [validator_1.BaseValidator, redis_1.RedisService],
         exports: [],
     })
 ], HelinaModule);
