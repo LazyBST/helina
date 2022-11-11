@@ -34,6 +34,9 @@ let ConsumerService = class ConsumerService {
             await consumer.disconnect();
         }
     }
+    getConsumers() {
+        return this.consumers;
+    }
 };
 ConsumerService = __decorate([
     (0, common_1.Injectable)(),
