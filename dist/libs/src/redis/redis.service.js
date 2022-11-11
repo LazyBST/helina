@@ -20,9 +20,9 @@ let RedisService = class RedisService {
     constructor(config) {
         this.config = config;
         this._redis = new ioredis_1.default({
-            port: config.get('db.redis_port'),
-            host: config.get('db.redis_host'),
-            password: config.get('db.redis_pass'),
+            port: +config.get('REDIS_PORT'),
+            host: config.get('REDIS_HOST'),
+            password: config.get('REDIS_PASS'),
         });
     }
     async setRedisKey(key, data, seconds) {

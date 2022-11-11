@@ -7,9 +7,9 @@ export class RedisService {
   private readonly _redis: Redis;
   constructor(private readonly config: ConfigService) {
     this._redis = new Redis({
-      port: config.get('db.redis_port'),
-      host: config.get('db.redis_host'),
-      password: config.get('db.redis_pass'),
+      port: +config.get('REDIS_PORT'),
+      host: config.get('REDIS_HOST'),
+      password: config.get('REDIS_PASS'),
     });
   }
 

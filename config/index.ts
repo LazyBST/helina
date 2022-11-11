@@ -1,5 +1,7 @@
-
-import cache from './redis';
+// import cache from './redis';
 import db from './database';
 
-export default [cache, db];
+export default [
+  // cache,
+  db,
+];
