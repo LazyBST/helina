@@ -4,6 +4,7 @@ import { ConfigModule } from '@nestjs/config';
 import { DiscoveryModule } from '@nestjs/core';
 import { BaseValidator } from './validator';
 import { KafkaModule } from './kafka/kafka.module';
+import { RedisService } from './redis';
 
 @Global()
 @Module({
@@ -16,7 +17,7 @@ import { KafkaModule } from './kafka/kafka.module';
     }),
     KafkaModule,
   ],
-  providers: [BaseValidator],
+  providers: [BaseValidator, RedisService],
   exports: [],
 })
 export class HelinaModule {}
