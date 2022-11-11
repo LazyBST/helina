@@ -37,7 +37,7 @@ export class ConsumerService implements OnApplicationShutdown {
     }
   }
 
-  getConsumers() {
+  getConsumers():IConsumer[] {
     return this.consumers
   }
 }
