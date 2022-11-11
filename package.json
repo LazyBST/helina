@@ -1,5 +1,5 @@
 {
-  "name": "helina",
+  "name": "@original4sure/cb-helina",
   "version": "0.0.4",
   "description": "ChannelBlu boilerplate for NestJS",
   "author": "O4S",
@@ -11,8 +11,8 @@
     "dist"
   ],
   "repository": {
-    "type": "git",
-    "url": "git@github.com:original4sure/cb_helina.git"
+    #"type": "git",
+    "url": "git@github.com:original4sure/cb-helina.git"
   },
   "scripts": {
     "prebuild": "rimraf dist",
