@@ -38,7 +38,7 @@ export class LoggingInterceptor implements NestInterceptor {
     this.logger.info(
       `Request: id-${uniqueId} Serice Name-${
         this.serviceName
-      }\t${method} ${protocol}://${hostname}${url}\t${JSON.stringify({
+      }  ${method} ${protocol}://${hostname}${url}  ${JSON.stringify({
         originalUrl,
         params,
         query,
@@ -52,9 +52,9 @@ export class LoggingInterceptor implements NestInterceptor {
         this.logger.info(
           `Response: id-${uniqueId} Serice Name-${
             this.serviceName
-          }\t${method} ${protocol}://${hostname}${url}\tlatency: ${
+          }  ${method} ${protocol}://${hostname}${url}  latency: ${
             Date.now() - now
-          }ms\t${JSON.stringify({
+          }ms  ${JSON.stringify({
             statusCode,
             data,
           })}`,
