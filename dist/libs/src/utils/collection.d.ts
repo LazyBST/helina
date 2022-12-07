@@ -1,4 +1,12 @@
 import { GenericFunction } from '../constants';
+declare enum DateFormat {
+    'YYYY-DD-MM' = "YYYY-DD-MM",
+    'DD-MM-YYYY' = "DD-MM-YYYY",
+    'MM-DD-YYYY' = "MM-DD-YYYY",
+    'DD/MM/YYYY' = "DD/MM/YYYY",
+    'MM/DD/YYYY' = "MM/DD/YYYY",
+    'YYYY/MM/DD' = "YYYY/MM/DD"
+}
 export declare class Collection<T = any> {
     raw: Array<any>;
     size: number;
@@ -25,4 +33,7 @@ export declare class Collection<T = any> {
     }): string;
     toBoolean(value: string | number | boolean): boolean | null;
     stringToNumber(string_value: string): Number;
+    convertDbDateToUserDate(utcDateString: string, dateFormat: DateFormat, timeZone: string): string | null;
+    convertUserDateToDbDate(dateString: string, dateFormat: DateFormat): Date | null;
 }
+export {};

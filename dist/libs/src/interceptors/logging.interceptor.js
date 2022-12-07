@@ -25,14 +25,14 @@ let LoggingInterceptor = class LoggingInterceptor {
         const { statusCode } = context.switchToHttp().getResponse();
         const { originalUrl, method, params, query, body, headers, hostname, url, protocol, } = request;
         const uniqueId = (0, uuid_1.v4)();
-        this.logger.info(`Request: id-${uniqueId} Serice Name-${this.serviceName}\t${method} ${protocol}://${hostname}${url}\t${JSON.stringify({
+        this.logger.info(`Request: id-${uniqueId} Serice Name-${this.serviceName}  ${method} ${protocol}://${hostname}${url}  ${JSON.stringify({
             originalUrl,
             params,
             query,
             body,
             headers,
         })}`);
-        return next.handle().pipe((0, rxjs_1.tap)((data) => this.logger.info(`Response: id-${uniqueId} Serice Name-${this.serviceName}\t${method} ${protocol}://${hostname}${url}\tlatency: ${Date.now() - now}ms\t${JSON.stringify({
+        return next.handle().pipe((0, rxjs_1.tap)((data) => this.logger.info(`Response: id-${uniqueId} Serice Name-${this.serviceName}  ${method} ${protocol}://${hostname}${url}  latency: ${Date.now() - now}ms  ${JSON.stringify({
             statusCode,
             data,
         })}`)));
