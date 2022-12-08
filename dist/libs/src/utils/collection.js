@@ -5,11 +5,13 @@ const lodash_1 = require("lodash");
 var DateFormat;
 (function (DateFormat) {
     DateFormat["YYYY-DD-MM"] = "YYYY-DD-MM";
+    DateFormat["YYYY/DD/MM"] = "YYYY/DD/MM";
     DateFormat["DD-MM-YYYY"] = "DD-MM-YYYY";
-    DateFormat["MM-DD-YYYY"] = "MM-DD-YYYY";
     DateFormat["DD/MM/YYYY"] = "DD/MM/YYYY";
+    DateFormat["MM-DD-YYYY"] = "MM-DD-YYYY";
     DateFormat["MM/DD/YYYY"] = "MM/DD/YYYY";
     DateFormat["YYYY/MM/DD"] = "YYYY/MM/DD";
+    DateFormat["YYYY-MM-DD"] = "YYYY-MM-DD";
 })(DateFormat || (DateFormat = {}));
 class Collection {
     constructor(data) {
@@ -201,8 +203,16 @@ class Collection {
                 userDate = `${year}/${month}/${day}`;
                 break;
             }
+            case DateFormat['YYYY-MM-DD']: {
+                userDate = `${year}-${month}-${day}`;
+                break;
+            }
             case DateFormat['YYYY-DD-MM']: {
                 userDate = `${year}-${day}-${month}`;
+                break;
+            }
+            case DateFormat['YYYY/DD/MM']: {
+                userDate = `${year}/${day}/${month}`;
                 break;
             }
             default: {
@@ -215,10 +225,7 @@ class Collection {
         const hyphenSeparatedDate = dateString.split('-');
         const slashSeparatedDate = dateString.split('/');
         let dateInfo;
-        if (hyphenSeparatedDate.length !== 3 && slashSeparatedDate.length !== 3) {
-            return null;
-        }
-        else if (hyphenSeparatedDate.length !== 3 &&
+        if (hyphenSeparatedDate.length !== 3 &&
             slashSeparatedDate.length === 3) {
             dateInfo = slashSeparatedDate;
         }
@@ -248,6 +255,14 @@ class Collection {
                 break;
             }
             case DateFormat['YYYY-DD-MM']:
+            case DateFormat['YYYY/DD/MM']: {
+                year = dateInfo[0];
+                day = dateInfo[1];
+                month = dateInfo[2];
+                outputDate = new Date(`${year}-${month}-${day}`);
+                break;
+            }
+            case DateFormat['YYYY-MM-DD']:
             case DateFormat['YYYY/MM/DD']: {
                 outputDate = new Date(dateString);
                 break;

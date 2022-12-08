@@ -3,13 +3,14 @@ import { GenericFunction } from '../constants';
 
 enum DateFormat {
   'YYYY-DD-MM' = 'YYYY-DD-MM',
+  'YYYY/DD/MM' = 'YYYY/DD/MM',
   'DD-MM-YYYY' = 'DD-MM-YYYY',
-  'MM-DD-YYYY' = 'MM-DD-YYYY',
   'DD/MM/YYYY' = 'DD/MM/YYYY',
+  'MM-DD-YYYY' = 'MM-DD-YYYY',
   'MM/DD/YYYY' = 'MM/DD/YYYY',
   'YYYY/MM/DD' = 'YYYY/MM/DD',
+  'YYYY-MM-DD' = 'YYYY-MM-DD',
 }
-
 export class Collection<T = any> {
   public raw: Array<any>;
   public size: number;
@@ -234,8 +235,16 @@ export class Collection<T = any> {
         userDate = `${year}/${month}/${day}`;
         break;
       }
+      case DateFormat['YYYY-MM-DD']: {
+        userDate = `${year}-${month}-${day}`;
+        break;
+      }
       case DateFormat['YYYY-DD-MM']: {
         userDate = `${year}-${day}-${month}`;
+        break;
+      }
+      case DateFormat['YYYY/DD/MM']: {
+        userDate = `${year}/${day}/${month}`;
         break;
       }
       default: {
@@ -254,9 +263,7 @@ export class Collection<T = any> {
     const slashSeparatedDate = dateString.split('/');
     let dateInfo: string[];
 
-    if (hyphenSeparatedDate.length !== 3 && slashSeparatedDate.length !== 3) {
-      return null;
-    } else if (
+    if (
       hyphenSeparatedDate.length !== 3 &&
       slashSeparatedDate.length === 3
     ) {
@@ -292,6 +299,15 @@ export class Collection<T = any> {
         break;
       }
       case DateFormat['YYYY-DD-MM']:
+      case DateFormat['YYYY/DD/MM']: {
+        year = dateInfo[0];
+        day = dateInfo[1];
+        month = dateInfo[2];
+
+        outputDate = new Date(`${year}-${month}-${day}`);
+        break;
+      }
+      case DateFormat['YYYY-MM-DD']:
       case DateFormat['YYYY/MM/DD']: {
         outputDate = new Date(dateString);
         break;

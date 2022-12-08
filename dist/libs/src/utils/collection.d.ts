@@ -1,11 +1,13 @@
 import { GenericFunction } from '../constants';
 declare enum DateFormat {
     'YYYY-DD-MM' = "YYYY-DD-MM",
+    'YYYY/DD/MM' = "YYYY/DD/MM",
     'DD-MM-YYYY' = "DD-MM-YYYY",
-    'MM-DD-YYYY' = "MM-DD-YYYY",
     'DD/MM/YYYY' = "DD/MM/YYYY",
+    'MM-DD-YYYY' = "MM-DD-YYYY",
     'MM/DD/YYYY' = "MM/DD/YYYY",
-    'YYYY/MM/DD' = "YYYY/MM/DD"
+    'YYYY/MM/DD' = "YYYY/MM/DD",
+    'YYYY-MM-DD' = "YYYY-MM-DD"
 }
 export declare class Collection<T = any> {
     raw: Array<any>;
