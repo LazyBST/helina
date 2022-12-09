@@ -2,10 +2,25 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Collection = void 0;
 const lodash_1 = require("lodash");
+const logger_1 = require("../logger");
+var DateFormat;
+(function (DateFormat) {
+    DateFormat["YYYY-DD-MM"] = "YYYY-DD-MM";
+    DateFormat["YYYY/DD/MM"] = "YYYY/DD/MM";
+    DateFormat["DD-MM-YYYY"] = "DD-MM-YYYY";
+    DateFormat["DD/MM/YYYY"] = "DD/MM/YYYY";
+    DateFormat["MM-DD-YYYY"] = "MM-DD-YYYY";
+    DateFormat["MM/DD/YYYY"] = "MM/DD/YYYY";
+    DateFormat["YYYY/MM/DD"] = "YYYY/MM/DD";
+    DateFormat["YYYY-MM-DD"] = "YYYY-MM-DD";
+})(DateFormat || (DateFormat = {}));
 class Collection {
     constructor(data) {
         this.raw = data || [];
         this.size = this.raw.length;
+        this.logger = new logger_1.LoggerService({
+            appName: "Helina",
+        });
     }
     static make(data) {
         return new Collection(data);
@@ -154,6 +169,118 @@ class Collection {
     }
     stringToNumber(string_value) {
         return Number(string_value);
+    }
+    convertDbDateToUserDate(utcDateString, dateFormat, timeZone) {
+        var _a;
+        let date;
+        try {
+            date = new Date((_a = new Date(utcDateString)) === null || _a === void 0 ? void 0 : _a.toLocaleString('en-US', { timeZone }));
+        }
+        catch (err) {
+            this.logger.error(`Error converting date as per timezone ::  ${err}`);
+        }
+        if (isNaN(date === null || date === void 0 ? void 0 : date.getTime())) {
+            return null;
+        }
+        const day = `0${date.getDate()}`.slice(-2);
+        const month = `0${date.getMonth()}`.slice(-2);
+        const year = date.getFullYear();
+        let userDate = '';
+        switch (dateFormat) {
+            case DateFormat['DD-MM-YYYY']: {
+                userDate = `${day}-${month}-${year}`;
+                break;
+            }
+            case DateFormat['DD/MM/YYYY']: {
+                userDate = `${day}/${month}/${year}`;
+                break;
+            }
+            case DateFormat['MM-DD-YYYY']: {
+                userDate = `${month}-${day}-${year}`;
+                break;
+            }
+            case DateFormat['MM/DD/YYYY']: {
+                userDate = `${month}/${day}/${year}`;
+                break;
+            }
+            case DateFormat['YYYY/MM/DD']: {
+                userDate = `${year}/${month}/${day}`;
+                break;
+            }
+            case DateFormat['YYYY-MM-DD']: {
+                userDate = `${year}-${month}-${day}`;
+                break;
+            }
+            case DateFormat['YYYY-DD-MM']: {
+                userDate = `${year}-${day}-${month}`;
+                break;
+            }
+            case DateFormat['YYYY/DD/MM']: {
+                userDate = `${year}/${day}/${month}`;
+                break;
+            }
+            default: {
+                userDate = null;
+            }
+        }
+        return userDate;
+    }
+    convertUserDateToDbDate(dateString, dateFormat) {
+        const hyphenSeparatedDate = dateString.split('-');
+        const slashSeparatedDate = dateString.split('/');
+        let dateInfo;
+        if (hyphenSeparatedDate.length !== 3 &&
+            slashSeparatedDate.length === 3) {
+            dateInfo = slashSeparatedDate;
+        }
+        else if (hyphenSeparatedDate.length === 3 &&
+            slashSeparatedDate.length !== 3) {
+            dateInfo = hyphenSeparatedDate;
+        }
+        else {
+            return null;
+        }
+        let day, month, year, outputDate;
+        switch (dateFormat) {
+            case DateFormat['DD/MM/YYYY']:
+            case DateFormat['DD-MM-YYYY']: {
+                day = dateInfo[0];
+                month = dateInfo[1];
+                year = dateInfo[2];
+                outputDate = new Date(`${year}-${month}-${day}`);
+                break;
+            }
+            case DateFormat['MM-DD-YYYY']:
+            case DateFormat['MM/DD/YYYY']: {
+                month = dateInfo[0];
+                day = dateInfo[1];
+                year = dateInfo[2];
+                outputDate = new Date(`${year}-${month}-${day}`);
+                break;
+            }
+            case DateFormat['YYYY-DD-MM']:
+            case DateFormat['YYYY/DD/MM']: {
+                year = dateInfo[0];
+                day = dateInfo[1];
+                month = dateInfo[2];
+                outputDate = new Date(`${year}-${month}-${day}`);
+                break;
+            }
+            case DateFormat['YYYY-MM-DD']:
+            case DateFormat['YYYY/MM/DD']: {
+                outputDate = new Date(dateString);
+                break;
+            }
+            default: {
+                outputDate = null;
+            }
+        }
+        if (outputDate === null || isNaN(outputDate === null || outputDate === void 0 ? void 0 : outputDate.getTime())) {
+            return null;
+        }
+        else {
+            return outputDate;
+        }
     }
 }
 exports.Collection = Collection;

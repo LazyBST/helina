@@ -5,6 +5,7 @@ import { DiscoveryModule } from '@nestjs/core';
 import { BaseValidator } from './validator';
 import { KafkaModule } from './kafka/kafka.module';
 import { RedisService } from './redis';
+import {LoggerModule} from './logger';
 
 @Global()
 @Module({
@@ -14,6 +15,10 @@ import { RedisService } from './redis';
       isGlobal: true,
       expandVariables: true,
       load: config,
+    }),
+    LoggerModule.forRoot({
+      isGlobal: true,
+      appName: 'Helina'
     }),
     KafkaModule,
   ],

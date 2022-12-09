@@ -17,6 +17,7 @@ const core_1 = require("@nestjs/core");
 const validator_1 = require("./validator");
 const kafka_module_1 = require("./kafka/kafka.module");
 const redis_1 = require("./redis");
+const logger_1 = require("./logger");
 let HelinaModule = class HelinaModule {
 };
 HelinaModule = __decorate([
@@ -28,6 +29,10 @@ HelinaModule = __decorate([
                 isGlobal: true,
                 expandVariables: true,
                 load: index_1.default,
+            }),
+            logger_1.LoggerModule.forRoot({
+                isGlobal: true,
+                appName: 'Helina'
             }),
             kafka_module_1.KafkaModule,
         ],
