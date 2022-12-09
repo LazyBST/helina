@@ -1,4 +1,4 @@
-import { LoggerService } from '@libs/logger';
+import { LoggerService } from '../logger';
 import {
   CallHandler,
   ExecutionContext,

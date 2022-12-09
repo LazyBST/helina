@@ -1,4 +1,4 @@
-import { LoggerService } from '@libs/logger';
+import { LoggerService } from '../logger';
 import { CallHandler, ExecutionContext, NestInterceptor } from '@nestjs/common';
 import { Observable } from 'rxjs';
 export declare class LoggingInterceptor implements NestInterceptor {
