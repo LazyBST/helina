@@ -1,4 +1,5 @@
 import { get, isObject, orderBy } from 'lodash';
+import { LoggerService } from '..';
 import { GenericFunction } from '../constants';
 
 enum DateFormat {
@@ -14,8 +15,9 @@ enum DateFormat {
 export class Collection<T = any> {
   public raw: Array<any>;
   public size: number;
+  public logger: LoggerService;
 
-  constructor(data?: Array<any>) {
+  constructor(data: Array<any>) {
     this.raw = data || [];
     this.size = this.raw.length;
   }
@@ -195,6 +197,7 @@ export class Collection<T = any> {
     dateFormat: DateFormat,
     timeZone: string,
   ): string | null {
+    this.logger.error("HELLO I AM  LOGGER")
     let date: Date;
     try {
       date = new Date(

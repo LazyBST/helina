@@ -168,6 +168,7 @@ class Collection {
     }
     convertDbDateToUserDate(utcDateString, dateFormat, timeZone) {
         var _a;
+        this.logger.error("HELLO I AM  LOGGER");
         let date;
         try {
             date = new Date((_a = new Date(utcDateString)) === null || _a === void 0 ? void 0 : _a.toLocaleString('en-US', { timeZone }));
