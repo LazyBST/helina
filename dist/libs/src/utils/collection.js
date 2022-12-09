@@ -2,6 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Collection = void 0;
 const lodash_1 = require("lodash");
+const __1 = require("..");
 var DateFormat;
 (function (DateFormat) {
     DateFormat["YYYY-DD-MM"] = "YYYY-DD-MM";
@@ -17,6 +18,9 @@ class Collection {
     constructor(data) {
         this.raw = data || [];
         this.size = this.raw.length;
+        this.logger = new __1.LoggerService({
+            appName: "HELINA",
+        });
     }
     static make(data) {
         return new Collection(data);

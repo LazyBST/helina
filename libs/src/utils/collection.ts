@@ -20,6 +20,9 @@ export class Collection<T = any> {
   constructor(data: Array<any>) {
     this.raw = data || [];
     this.size = this.raw.length;
+    this.logger = new LoggerService({
+      appName: "HELINA",
+    })
   }
 
   static make<T>(data?: Array<any>): Collection<T> {
