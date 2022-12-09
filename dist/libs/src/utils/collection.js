@@ -2,6 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Collection = void 0;
 const lodash_1 = require("lodash");
+const logger_1 = require("../logger");
 var DateFormat;
 (function (DateFormat) {
     DateFormat["YYYY-DD-MM"] = "YYYY-DD-MM";
@@ -17,6 +18,9 @@ class Collection {
     constructor(data) {
         this.raw = data || [];
         this.size = this.raw.length;
+        this.logger = new logger_1.LoggerService({
+            appName: "Helina",
+        });
     }
     static make(data) {
         return new Collection(data);
@@ -173,7 +177,7 @@ class Collection {
             date = new Date((_a = new Date(utcDateString)) === null || _a === void 0 ? void 0 : _a.toLocaleString('en-US', { timeZone }));
         }
         catch (err) {
-            console.error(`Error converting date as per timezone ::  ${err}`);
+            this.logger.error(`Error converting date as per timezone ::  ${err}`);
         }
         if (isNaN(date === null || date === void 0 ? void 0 : date.getTime())) {
             return null;

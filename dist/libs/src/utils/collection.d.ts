@@ -1,3 +1,4 @@
+import { LoggerService } from '../logger';
 import { GenericFunction } from '../constants';
 declare enum DateFormat {
     'YYYY-DD-MM' = "YYYY-DD-MM",
@@ -12,7 +13,8 @@ declare enum DateFormat {
 export declare class Collection<T = any> {
     raw: Array<any>;
     size: number;
-    constructor(data?: Array<any>);
+    logger: LoggerService;
+    constructor(data: Array<any>);
     static make<T>(data?: Array<any>): Collection<T>;
     first(): T;
     last(): T;
