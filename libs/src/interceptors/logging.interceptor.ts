@@ -10,7 +10,7 @@ import { v4 as uuidv4 } from 'uuid';
 
 @Injectable()
 export class LoggingInterceptor implements NestInterceptor {
-  constructor(private logger: LoggerService, private serviceName: string) {}
+  constructor(private logger: LoggerService) {}
 
   intercept(
     context: ExecutionContext,
@@ -36,9 +36,7 @@ export class LoggingInterceptor implements NestInterceptor {
     const uniqueId = uuidv4();
 
     this.logger.info(
-      `Request: id-${uniqueId} Serice Name-${
-        this.serviceName
-      }  ${method} ${protocol}://${hostname}${url}  ${JSON.stringify({
+      `Request: id-${uniqueId}  ${method} ${protocol}://${hostname}${url}  ${JSON.stringify({
         originalUrl,
         params,
         query,
@@ -50,9 +48,7 @@ export class LoggingInterceptor implements NestInterceptor {
     return next.handle().pipe(
       tap((data) =>
         this.logger.info(
-          `Response: id-${uniqueId} Serice Name-${
-            this.serviceName
-          }  ${method} ${protocol}://${hostname}${url}  latency: ${
+          `Response: id-${uniqueId}  ${method} ${protocol}://${hostname}${url}  latency: ${
             Date.now() - now
           }ms  ${JSON.stringify({
             statusCode,
