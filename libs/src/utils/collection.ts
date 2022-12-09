@@ -1,4 +1,5 @@
 import { get, isObject, orderBy } from 'lodash';
+import { LoggerService } from '../logger';
 import { GenericFunction } from '../constants';
 
 enum DateFormat {
@@ -14,10 +15,14 @@ enum DateFormat {
 export class Collection<T = any> {
   public raw: Array<any>;
   public size: number;
+  public logger: LoggerService;
 
-  constructor(data?: Array<any>) {
+  constructor(data: Array<any>) {
     this.raw = data || [];
     this.size = this.raw.length;
+    this.logger = new LoggerService({
+      appName: "Helina",
+    })
   }
 
   static make<T>(data?: Array<any>): Collection<T> {
@@ -201,7 +206,7 @@ export class Collection<T = any> {
         new Date(utcDateString)?.toLocaleString('en-US', { timeZone }),
       );
     } catch (err) {
-      console.error(`Error converting date as per timezone ::  ${err}`);
+      this.logger.error(`Error converting date as per timezone ::  ${err}`);
     }
 
     if (isNaN(date?.getTime())) {
