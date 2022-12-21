@@ -20,7 +20,7 @@ let RedisService = class RedisService {
     constructor(config) {
         this.config = config;
         this._redis = new ioredis_1.default({
-            port: +config.get('REDIS_PORT'),
+            port: parseInt(config.get('REDIS_PORT')),
             host: config.get('REDIS_HOST'),
             password: config.get('REDIS_PASS'),
         });
