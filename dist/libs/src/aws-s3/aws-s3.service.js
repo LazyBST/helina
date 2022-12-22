@@ -8,6 +8,9 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
+var __param = (this && this.__param) || function (paramIndex, decorator) {
+    return function (target, key) { decorator(target, key, paramIndex); }
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.AwsS3Service = void 0;
 const common_1 = require("@nestjs/common");
@@ -50,6 +53,7 @@ let AwsS3Service = class AwsS3Service {
 };
 AwsS3Service = __decorate([
     (0, common_1.Injectable)(),
+    __param(1, (0, common_1.Inject)('CONFIG')),
     __metadata("design:paramtypes", [logger_1.LoggerService, Object])
 ], AwsS3Service);
 exports.AwsS3Service = AwsS3Service;

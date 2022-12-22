@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 import { getSignedUrl } from '@aws-sdk/s3-request-presigner';
 import {
   S3Client,
@@ -12,7 +12,10 @@ import { LoggerService } from '../logger';
 export class AwsS3Service {
   private s3Client: S3Client;
 
-  constructor(private logger: LoggerService, private config: S3ClientConfig) {
+  constructor(
+    private logger: LoggerService,
+    @Inject('CONFIG') private config: S3ClientConfig,
+  ) {
     const { accessKeyId, secretAccessKey, region } = this.config;
 
     this.s3Client = new S3Client({
