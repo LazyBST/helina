@@ -25,4 +25,5 @@ __exportStar(require("./logger"), exports);
 __exportStar(require("./kafka"), exports);
 __exportStar(require("./redis"), exports);
 __exportStar(require("./interceptors"), exports);
+__exportStar(require("./aws-s3"), exports);
 //# sourceMappingURL=index.js.map

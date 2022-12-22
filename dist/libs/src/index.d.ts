@@ -9,3 +9,4 @@ export * from './logger';
 export * from './kafka';
 export * from './redis';
 export * from './interceptors';
+export * from './aws-s3';
