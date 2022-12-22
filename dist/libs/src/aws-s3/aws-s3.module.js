@@ -14,6 +14,7 @@ let AwsS3Module = class AwsS3Module {
 AwsS3Module = __decorate([
     (0, common_1.Module)({
         providers: [aws_s3_service_1.AwsS3Service],
+        exports: [aws_s3_service_1.AwsS3Service],
     })
 ], AwsS3Module);
 exports.AwsS3Module = AwsS3Module;
