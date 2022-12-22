@@ -16,7 +16,7 @@ const client_s3_1 = require("@aws-sdk/client-s3");
 const aws_s3_interface_1 = require("./aws-s3.interface");
 const logger_1 = require("../logger");
 let AwsS3Service = class AwsS3Service {
-    constructor(config, logger) {
+    constructor(logger, config) {
         this.logger = logger;
         const { accessKeyId, secretAccessKey, region } = config;
         this.s3Client = new client_s3_1.S3Client({
@@ -49,7 +49,7 @@ let AwsS3Service = class AwsS3Service {
 };
 AwsS3Service = __decorate([
     (0, common_1.Injectable)(),
-    __metadata("design:paramtypes", [Object, logger_1.LoggerService])
+    __metadata("design:paramtypes", [logger_1.LoggerService, Object])
 ], AwsS3Service);
 exports.AwsS3Service = AwsS3Service;
 //# sourceMappingURL=aws-s3.service.js.map

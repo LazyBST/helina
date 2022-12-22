@@ -3,6 +3,6 @@ import { LoggerService } from '../logger';
 export declare class AwsS3Service {
     private logger;
     private s3Client;
-    constructor(config: S3ClientConfig, logger: LoggerService);
+    constructor(logger: LoggerService, config: S3ClientConfig);
     getPresignedUrl(bucket: string, fileName: string, permission: PresignedUrlPermission, expiry: number): Promise<any>;
 }
