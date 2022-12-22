@@ -12,8 +12,8 @@ import { LoggerService } from '../logger';
 export class AwsS3Service {
   private s3Client: S3Client;
 
-  constructor(private logger: LoggerService, config: S3ClientConfig) {
-    const { accessKeyId, secretAccessKey, region } = config;
+  constructor(private logger: LoggerService, private config: S3ClientConfig) {
+    const { accessKeyId, secretAccessKey, region } = this.config;
 
     this.s3Client = new S3Client({
       credentials: {

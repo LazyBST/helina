@@ -18,7 +18,8 @@ const logger_1 = require("../logger");
 let AwsS3Service = class AwsS3Service {
     constructor(logger, config) {
         this.logger = logger;
-        const { accessKeyId, secretAccessKey, region } = config;
+        this.config = config;
+        const { accessKeyId, secretAccessKey, region } = this.config;
         this.s3Client = new client_s3_1.S3Client({
             credentials: {
                 accessKeyId,
