@@ -34,6 +34,8 @@
     "seed:make": "npm run knex seed:make -- -x ts"
   },
   "dependencies": {
+    "@aws-sdk/client-s3": "^3.236.0",
+    "@aws-sdk/s3-request-presigner": "^3.236.0",
     "@nestjs/cli": "^9.0.0",
     "@nestjs/common": "^9.0.0",
     "@nestjs/config": "^2.2.0",
