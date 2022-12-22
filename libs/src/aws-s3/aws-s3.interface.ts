@@ -1,9 +1,7 @@
-export interface PresignedUrlConfig {
+export interface S3ClientConfig {
   accessKeyId: string;
   secretAccessKey: string;
   region: string;
-  bucket: string;
-  expiry: number;
 }
 
 export enum PresignedUrlPermission {

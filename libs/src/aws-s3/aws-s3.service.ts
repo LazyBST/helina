@@ -5,25 +5,31 @@ import {
   GetObjectCommand,
   PutObjectCommand,
 } from '@aws-sdk/client-s3';
-import { PresignedUrlConfig, PresignedUrlPermission } from './aws-s3.interface';
+import { S3ClientConfig, PresignedUrlPermission } from './aws-s3.interface';
+import { LoggerService } from '..';
 
 @Injectable()
 export class AwsS3Service {
-  async getPresignedUrl(
-    config: PresignedUrlConfig,
-    fileName: string,
-    permission: PresignedUrlPermission,
-  ): Promise<any> {
-    const { accessKeyId, secretAccessKey, region, bucket, expiry } = config;
+  private s3Client: S3Client;
 
-    const client = new S3Client({
+  constructor(config: S3ClientConfig, private logger: LoggerService) {
+    const { accessKeyId, secretAccessKey, region } = config;
+
+    this.s3Client = new S3Client({
       credentials: {
         accessKeyId,
         secretAccessKey,
       },
       region: region,
     });
+  }
 
+  async getPresignedUrl(
+    bucket: string,
+    fileName: string,
+    permission: PresignedUrlPermission,
+    expiry: number,
+  ): Promise<any> {
     const commandConfig = {
       Bucket: bucket,
       Key: fileName,
@@ -37,7 +43,13 @@ export class AwsS3Service {
       command = new PutObjectCommand(commandConfig);
     }
 
-    const url = await getSignedUrl(client, command, { expiresIn: expiry });
+    const url = await getSignedUrl(this.s3Client, command, {
+      expiresIn: expiry,
+    }).catch((err) => {
+      this.logger.error(
+        `Error generating s3 presigned url for file :: ${fileName} :: ${err}`,
+      );
+    });
 
     return { url };
   }

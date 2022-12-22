@@ -1,4 +1,8 @@
-import { PresignedUrlConfig, PresignedUrlPermission } from './aws-s3.interface';
+import { S3ClientConfig, PresignedUrlPermission } from './aws-s3.interface';
+import { LoggerService } from '..';
 export declare class AwsS3Service {
-    getPresignedUrl(config: PresignedUrlConfig, fileName: string, permission: PresignedUrlPermission): Promise<any>;
+    private logger;
+    private s3Client;
+    constructor(config: S3ClientConfig, logger: LoggerService);
+    getPresignedUrl(bucket: string, fileName: string, permission: PresignedUrlPermission, expiry: number): Promise<any>;
 }

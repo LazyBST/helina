@@ -1,1 +1,1 @@
-{"version":3,"file":"aws-s3.interface.js","sourceRoot":"","sources":["../../../../libs/src/aws-s3/aws-s3.interface.ts"],"names":[],"mappings":";;;AAQA,IAAY,sBAGX;AAHD,WAAY,sBAAsB;IAChC,uCAAa,CAAA;IACb,yCAAe,CAAA;AACjB,CAAC,EAHW,sBAAsB,GAAtB,8BAAsB,KAAtB,8BAAsB,QAGjC"}
+{"version":3,"file":"aws-s3.interface.js","sourceRoot":"","sources":["../../../../libs/src/aws-s3/aws-s3.interface.ts"],"names":[],"mappings":";;;AAMA,IAAY,sBAGX;AAHD,WAAY,sBAAsB;IAChC,uCAAa,CAAA;IACb,yCAAe,CAAA;AACjB,CAAC,EAHW,sBAAsB,GAAtB,8BAAsB,KAAtB,8BAAsB,QAGjC"}
