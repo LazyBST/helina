@@ -6,7 +6,7 @@ import {
   PutObjectCommand,
 } from '@aws-sdk/client-s3';
 import { S3ClientConfig, PresignedUrlPermission } from './aws-s3.interface';
-import { LoggerService } from '..';
+import { LoggerService } from '../logger';
 
 @Injectable()
 export class AwsS3Service {
