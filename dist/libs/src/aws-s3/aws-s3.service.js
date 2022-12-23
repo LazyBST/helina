@@ -16,7 +16,7 @@ const client_s3_1 = require("@aws-sdk/client-s3");
 const aws_s3_interface_1 = require("./aws-s3.interface");
 const logger_1 = require("../logger");
 let AwsS3Service = class AwsS3Service {
-    constructor(logger, random) {
+    constructor(logger) {
         this.logger = logger;
     }
     async getPresignedUrl(config, bucket, fileName, permission, expiry) {
@@ -51,7 +51,7 @@ let AwsS3Service = class AwsS3Service {
 };
 AwsS3Service = __decorate([
     (0, common_1.Injectable)(),
-    __metadata("design:paramtypes", [logger_1.LoggerService, String])
+    __metadata("design:paramtypes", [logger_1.LoggerService])
 ], AwsS3Service);
 exports.AwsS3Service = AwsS3Service;
 //# sourceMappingURL=aws-s3.service.js.map

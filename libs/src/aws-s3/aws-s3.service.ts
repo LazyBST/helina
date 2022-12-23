@@ -12,7 +12,7 @@ import { LoggerService } from '../logger';
 export class AwsS3Service {
   private s3Client: S3Client;
 
-  constructor(private logger: LoggerService, random: string) {}
+  constructor(private logger: LoggerService) {}
 
   async getPresignedUrl(
     config: S3ClientConfig,
