@@ -8,9 +8,6 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-var __param = (this && this.__param) || function (paramIndex, decorator) {
-    return function (target, key) { decorator(target, key, paramIndex); }
-};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.AwsS3Service = void 0;
 const common_1 = require("@nestjs/common");
@@ -19,19 +16,20 @@ const client_s3_1 = require("@aws-sdk/client-s3");
 const aws_s3_interface_1 = require("./aws-s3.interface");
 const logger_1 = require("../logger");
 let AwsS3Service = class AwsS3Service {
-    constructor(logger, config) {
+    constructor(logger, random) {
         this.logger = logger;
-        this.config = config;
-        const { accessKeyId, secretAccessKey, region } = this.config;
-        this.s3Client = new client_s3_1.S3Client({
-            credentials: {
-                accessKeyId,
-                secretAccessKey,
-            },
-            region: region,
-        });
     }
-    async getPresignedUrl(bucket, fileName, permission, expiry) {
+    async getPresignedUrl(config, bucket, fileName, permission, expiry) {
+        if (!this.s3Client) {
+            const { accessKeyId, secretAccessKey, region } = config;
+            this.s3Client = new client_s3_1.S3Client({
+                credentials: {
+                    accessKeyId,
+                    secretAccessKey,
+                },
+                region: region,
+            });
+        }
         const commandConfig = {
             Bucket: bucket,
             Key: fileName,
@@ -53,8 +51,7 @@ let AwsS3Service = class AwsS3Service {
 };
 AwsS3Service = __decorate([
     (0, common_1.Injectable)(),
-    __param(1, (0, common_1.Inject)('CONFIG')),
-    __metadata("design:paramtypes", [logger_1.LoggerService, Object])
+    __metadata("design:paramtypes", [logger_1.LoggerService, String])
 ], AwsS3Service);
 exports.AwsS3Service = AwsS3Service;
 //# sourceMappingURL=aws-s3.service.js.map

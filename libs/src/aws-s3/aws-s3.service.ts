@@ -12,27 +12,27 @@ import { LoggerService } from '../logger';
 export class AwsS3Service {
   private s3Client: S3Client;
 
-  constructor(
-    private logger: LoggerService,
-    @Inject('CONFIG') private config: S3ClientConfig,
-  ) {
-    const { accessKeyId, secretAccessKey, region } = this.config;
-
-    this.s3Client = new S3Client({
-      credentials: {
-        accessKeyId,
-        secretAccessKey,
-      },
-      region: region,
-    });
-  }
+  constructor(private logger: LoggerService, random: string) {}
 
   async getPresignedUrl(
+    config: S3ClientConfig,
     bucket: string,
     fileName: string,
     permission: PresignedUrlPermission,
     expiry: number,
   ): Promise<any> {
+    if (!this.s3Client) {
+      const { accessKeyId, secretAccessKey, region } = config;
+
+      this.s3Client = new S3Client({
+        credentials: {
+          accessKeyId,
+          secretAccessKey,
+        },
+        region: region,
+      });
+    }
+
     const commandConfig = {
       Bucket: bucket,
       Key: fileName,
