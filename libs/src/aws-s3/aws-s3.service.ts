@@ -89,8 +89,7 @@ export class AwsS3Service {
     const command = new PutObjectCommand(commandConfig);
 
     try {
-      const data = await this.s3Client.send(command);
-      console.log({ data });
+      await this.s3Client.send(command);
       this.logger.info(
         'File uploaded successfully with file name: ' + fileName,
       );
