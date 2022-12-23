@@ -48,6 +48,39 @@ let AwsS3Service = class AwsS3Service {
         });
         return { url };
     }
+    async uploadFile(config, bucket, fileName, fileContent) {
+        if (!this.s3Client) {
+            const { accessKeyId, secretAccessKey, region } = config;
+            this.s3Client = new client_s3_1.S3Client({
+                credentials: {
+                    accessKeyId,
+                    secretAccessKey,
+                },
+                region: region,
+            });
+        }
+        const commandConfig = {
+            Bucket: bucket,
+            Key: fileName,
+            Body: fileContent,
+        };
+        const command = new client_s3_1.PutObjectCommand(commandConfig);
+        try {
+            const data = await this.s3Client.send(command);
+            console.log({ data });
+            this.logger.info('File uploaded successfully with file name: ' + fileName);
+            return {
+                isUploaded: true,
+            };
+        }
+        catch (err) {
+            this.logger.error(`Error Uploading File :: ${fileName} :: ${err}`);
+            return {
+                isUploaded: false,
+                error: err,
+            };
+        }
+    }
 };
 AwsS3Service = __decorate([
     (0, common_1.Injectable)(),
