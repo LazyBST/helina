@@ -66,8 +66,7 @@ let AwsS3Service = class AwsS3Service {
         };
         const command = new client_s3_1.PutObjectCommand(commandConfig);
         try {
-            const data = await this.s3Client.send(command);
-            console.log({ data });
+            await this.s3Client.send(command);
             this.logger.info('File uploaded successfully with file name: ' + fileName);
             return {
                 isUploaded: true,
