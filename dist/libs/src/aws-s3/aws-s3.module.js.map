@@ -1,0 +1,1 @@
+{"version":3,"file":"aws-s3.module.js","sourceRoot":"","sources":["../../../../libs/src/aws-s3/aws-s3.module.ts"],"names":[],"mappings":";;;;;;;;;AAAA,2CAAwC;AACxC,qDAAgD;AAMzC,IAAM,WAAW,GAAjB,MAAM,WAAW;CAAG,CAAA;AAAd,WAAW;IAJvB,IAAA,eAAM,EAAC;QACN,SAAS,EAAE,CAAC,6BAAY,CAAC;QACzB,OAAO,EAAE,CAAC,6BAAY,CAAC;KACxB,CAAC;GACW,WAAW,CAAG;AAAd,kCAAW"}
