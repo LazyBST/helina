@@ -40,6 +40,7 @@ export class KafkajsConsumer implements IConsumer {
     const kafkaMechnism = this.configService.get<string>('KF_MECHANISM');
     const kafkaUsername = this.configService.get<string>('KF_USERNAME');
     const kafkaPassword = this.configService.get<string>('KF_PASSWORD');
+    const kafkaSsl = this.configService.get<string>('KF_SSL');
 
     if (kafkaMechnism !== 'plain') {
       this.logger.error(`Only PLAIN mechanism is supported for kafka`);
@@ -49,7 +50,7 @@ export class KafkajsConsumer implements IConsumer {
     try {
       this.kafka = new Kafka({
         brokers: this.brokers,
-        ssl: true,
+        ssl: kafkaSsl === 'true',
         sasl: {
           mechanism: kafkaMechnism,
           username: kafkaUsername,
