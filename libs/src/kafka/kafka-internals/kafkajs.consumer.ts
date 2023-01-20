@@ -4,6 +4,7 @@ import {
   ConsumerSubscribeTopics,
   Kafka,
   KafkaMessage,
+  SASLOptions,
 } from 'kafkajs';
 import retry from 'async-retry';
 import { sleep } from '../../utils/sleep';
@@ -47,15 +48,30 @@ export class KafkajsConsumer implements IConsumer {
       return;
     }
 
+    console.log({ kafkaUsername, kafkaPassword });
+
+    const sasl: SASLOptions =
+      kafkaUsername && kafkaPassword
+        ? ({
+            mechanism: kafkaMechnism,
+            username: kafkaUsername,
+            password: kafkaPassword,
+          } as SASLOptions)
+        : undefined;
+
+    console.log({ sasl });
+
+    console.log({
+      brokers: this.brokers,
+      ssl: kafkaSsl === 'true',
+      sasl,
+    });
+
     try {
       this.kafka = new Kafka({
         brokers: this.brokers,
         ssl: kafkaSsl === 'true',
-        sasl: {
-          mechanism: kafkaMechnism,
-          username: kafkaUsername,
-          password: kafkaPassword,
-        },
+        sasl,
       });
       this.consumer = this.kafka.consumer(this.config);
     } catch (err) {

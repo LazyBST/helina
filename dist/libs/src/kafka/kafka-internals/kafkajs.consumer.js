@@ -23,15 +23,25 @@ class KafkajsConsumer {
             this.logger.error(`Only PLAIN mechanism is supported for kafka`);
             return;
         }
+        console.log({ kafkaUsername, kafkaPassword });
+        const sasl = kafkaUsername && kafkaPassword
+            ? {
+                mechanism: kafkaMechnism,
+                username: kafkaUsername,
+                password: kafkaPassword,
+            }
+            : undefined;
+        console.log({ sasl });
+        console.log({
+            brokers: this.brokers,
+            ssl: kafkaSsl === 'true',
+            sasl,
+        });
         try {
             this.kafka = new kafkajs_1.Kafka({
                 brokers: this.brokers,
                 ssl: kafkaSsl === 'true',
-                sasl: {
-                    mechanism: kafkaMechnism,
-                    username: kafkaUsername,
-                    password: kafkaPassword,
-                },
+                sasl,
             });
             this.consumer = this.kafka.consumer(this.config);
         }
