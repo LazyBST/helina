@@ -19,7 +19,7 @@ let AwsS3Service = class AwsS3Service {
     constructor(logger) {
         this.logger = logger;
     }
-    async getPresignedUrl(config, bucket, fileName, permission, expiry) {
+    async getPresignedUrl(config, commandConfig, permission, expiry) {
         if (!this.s3Client) {
             const { accessKeyId, secretAccessKey, region } = config;
             this.s3Client = new client_s3_1.S3Client({
@@ -30,10 +30,7 @@ let AwsS3Service = class AwsS3Service {
                 region: region,
             });
         }
-        const commandConfig = {
-            Bucket: bucket,
-            Key: fileName,
-        };
+        const { Key: fileName } = commandConfig;
         let command;
         if (permission === aws_s3_interface_1.PresignedUrlPermission.READ) {
             command = new client_s3_1.GetObjectCommand(commandConfig);
