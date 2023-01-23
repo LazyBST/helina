@@ -48,8 +48,6 @@ export class KafkajsConsumer implements IConsumer {
       return;
     }
 
-    console.log({ kafkaUsername, kafkaPassword });
-
     const sasl: SASLOptions =
       kafkaUsername && kafkaPassword
         ? ({
@@ -58,14 +56,6 @@ export class KafkajsConsumer implements IConsumer {
             password: kafkaPassword,
           } as SASLOptions)
         : undefined;
-
-    console.log({ sasl });
-
-    console.log({
-      brokers: this.brokers,
-      ssl: kafkaSsl === 'true',
-      sasl,
-    });
 
     try {
       this.kafka = new Kafka({
