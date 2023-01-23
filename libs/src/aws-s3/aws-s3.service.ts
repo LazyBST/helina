@@ -46,7 +46,7 @@ export class AwsS3Service {
     if (permission === PresignedUrlPermission.READ) {
       command = new GetObjectCommand(commandConfig);
     } else if (permission === PresignedUrlPermission.WRITE) {
-      command = new PutObjectCommand(commandConfig);
+      command = new PutObjectCommand({ ...commandConfig, ACL });
     }
 
     const url = await getSignedUrl(this.s3Client, command, {
