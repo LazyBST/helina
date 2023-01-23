@@ -4,6 +4,8 @@ import {
   S3Client,
   GetObjectCommand,
   PutObjectCommand,
+  PutObjectCommandInput,
+  GetObjectCommandInput,
 } from '@aws-sdk/client-s3';
 import {
   S3ClientConfig,
@@ -21,8 +23,7 @@ export class AwsS3Service {
 
   async getPresignedUrl(
     config: S3ClientConfig,
-    bucket: string,
-    fileName: string,
+    commandConfig: GetObjectCommandInput | PutObjectCommandInput,
     permission: PresignedUrlPermission,
     expiry: number,
   ): Promise<IPresignedUrlResponse> {
@@ -38,17 +39,14 @@ export class AwsS3Service {
       });
     }
 
-    const commandConfig = {
-      Bucket: bucket,
-      Key: fileName,
-    };
+    const { Key: fileName } = commandConfig;
 
     let command;
 
     if (permission === PresignedUrlPermission.READ) {
       command = new GetObjectCommand(commandConfig);
     } else if (permission === PresignedUrlPermission.WRITE) {
-      command = new PutObjectCommand(commandConfig);
+      command = new PutObjectCommand({ ...commandConfig, ACL });
     }
 
     const url = await getSignedUrl(this.s3Client, command, {
