@@ -1,4 +1,4 @@
-import { Kafka, Message, Producer, RecordMetadata } from 'kafkajs';
+import { Kafka, Message, Producer, RecordMetadata, SASLOptions } from 'kafkajs';
 import { sleep } from '../../utils/sleep';
 import { IProducer } from '../../interfaces';
 import retry from 'async-retry';
@@ -18,21 +18,27 @@ export class KafkajsProducer implements IProducer {
     const kafkaMechnism = this.configService.get<string>('KF_MECHANISM');
     const kafkaUsername = this.configService.get<string>('KF_USERNAME');
     const kafkaPassword = this.configService.get<string>('KF_PASSWORD');
+    const kafkaSsl = this.configService.get<string>('KF_SSL');
 
     if (kafkaMechnism !== 'plain') {
       this.logger.error(`Only PLAIN mechanism is supported for kafka`);
       return;
     }
 
+    const sasl: SASLOptions =
+      kafkaUsername && kafkaPassword
+        ? ({
+            mechanism: kafkaMechnism,
+            username: kafkaUsername,
+            password: kafkaPassword,
+          } as SASLOptions)
+        : undefined;
+
     try {
       this.kafka = new Kafka({
         brokers: this.brokers,
-        ssl: true,
-        sasl: {
-          mechanism: kafkaMechnism,
-          username: kafkaUsername,
-          password: kafkaPassword,
-        },
+        ssl: kafkaSsl === 'true',
+        sasl,
       });
       this.producer = this.kafka.producer();
     } catch (err) {
