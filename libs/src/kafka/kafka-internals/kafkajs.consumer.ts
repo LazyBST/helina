@@ -4,6 +4,7 @@ import {
   ConsumerSubscribeTopics,
   Kafka,
   KafkaMessage,
+  SASLOptions,
 } from 'kafkajs';
 import retry from 'async-retry';
 import { sleep } from '../../utils/sleep';
@@ -40,21 +41,27 @@ export class KafkajsConsumer implements IConsumer {
     const kafkaMechnism = this.configService.get<string>('KF_MECHANISM');
     const kafkaUsername = this.configService.get<string>('KF_USERNAME');
     const kafkaPassword = this.configService.get<string>('KF_PASSWORD');
+    const kafkaSsl = this.configService.get<string>('KF_SSL');
 
     if (kafkaMechnism !== 'plain') {
       this.logger.error(`Only PLAIN mechanism is supported for kafka`);
       return;
     }
 
+    const sasl: SASLOptions =
+      kafkaUsername && kafkaPassword
+        ? ({
+            mechanism: kafkaMechnism,
+            username: kafkaUsername,
+            password: kafkaPassword,
+          } as SASLOptions)
+        : undefined;
+
     try {
       this.kafka = new Kafka({
         brokers: this.brokers,
-        ssl: true,
-        sasl: {
-          mechanism: kafkaMechnism,
-          username: kafkaUsername,
-          password: kafkaPassword,
-        },
+        ssl: kafkaSsl === 'true',
+        sasl,
       });
       this.consumer = this.kafka.consumer(this.config);
     } catch (err) {
