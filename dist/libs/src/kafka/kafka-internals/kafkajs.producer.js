@@ -16,19 +16,23 @@ class KafkajsProducer {
         const kafkaMechnism = this.configService.get('KF_MECHANISM');
         const kafkaUsername = this.configService.get('KF_USERNAME');
         const kafkaPassword = this.configService.get('KF_PASSWORD');
+        const kafkaSsl = this.configService.get('KF_SSL');
         if (kafkaMechnism !== 'plain') {
             this.logger.error(`Only PLAIN mechanism is supported for kafka`);
             return;
         }
+        const sasl = kafkaUsername && kafkaPassword
+            ? {
+                mechanism: kafkaMechnism,
+                username: kafkaUsername,
+                password: kafkaPassword,
+            }
+            : undefined;
         try {
             this.kafka = new kafkajs_1.Kafka({
                 brokers: this.brokers,
-                ssl: true,
-                sasl: {
-                    mechanism: kafkaMechnism,
-                    username: kafkaUsername,
-                    password: kafkaPassword,
-                },
+                ssl: kafkaSsl === 'true',
+                sasl,
             });
             this.producer = this.kafka.producer();
         }
