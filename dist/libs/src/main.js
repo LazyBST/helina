@@ -18,7 +18,6 @@ async function bootstrap(appModule) {
     const db_conn = app.get(typeorm_1.DataSource);
     await db_conn.runMigrations();
     const config = app.get(config_1.ConfigService);
-    console.log({ config });
     const logger = app.get(logger_1.LoggerService);
     app.useGlobalPipes(new common_1.ValidationPipe({
         whitelist: true,
@@ -35,7 +34,6 @@ async function bootstrap(appModule) {
         logger.error('Error getting PORT from env');
         throw new Error('Error getting PORT from env');
     }
-    console.log({ port });
     await app.listen(port, '0.0.0.0');
     return app;
 }

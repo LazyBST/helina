@@ -2,6 +2,10 @@
 import * as dotenv from 'dotenv';
 dotenv.config({ path: './environment/.env' });
 
+import {
+  BatchSpanProcessor,
+  BasicTracerProvider,
+} from '@opentelemetry/sdk-trace-base';
 import { OTLPTraceExporter } from '@opentelemetry/exporter-trace-otlp-grpc';
 import { Resource } from '@opentelemetry/resources';
 import { SemanticResourceAttributes } from '@opentelemetry/semantic-conventions';
@@ -29,12 +33,19 @@ const exporterOptions = {
 
 const exporter = new OTLPTraceExporter(exporterOptions);
 
-const sdk = new NodeSDK({
-  traceExporter: exporter,
-  instrumentations: [getNodeAutoInstrumentations()],
+const provider = new BasicTracerProvider({
   resource: new Resource({
     [SemanticResourceAttributes.SERVICE_NAME]: SERVICE_NAME,
   }),
+});
+
+provider.addSpanProcessor(new BatchSpanProcessor(exporter));
+
+provider.register();
+
+const sdk = new NodeSDK({
+  traceExporter: exporter,
+  instrumentations: [getNodeAutoInstrumentations()],
 });
 
 // gracefully shut down the SDK on process exit

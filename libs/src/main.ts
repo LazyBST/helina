@@ -22,7 +22,6 @@ async function bootstrap(appModule: any): Promise<NestFastifyApplication> {
   await db_conn.runMigrations();
 
   const config = app.get(ConfigService);
-  console.log({ config });
   const logger = app.get(LoggerService);
 
   app.useGlobalPipes(
@@ -47,8 +46,6 @@ async function bootstrap(appModule: any): Promise<NestFastifyApplication> {
     logger.error('Error getting PORT from env');
     throw new Error('Error getting PORT from env');
   }
-
-  console.log({ port });
 
   await app.listen(port, '0.0.0.0');
 
