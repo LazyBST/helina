@@ -12,7 +12,7 @@ import instrumentation from './instrumentation';
 
 // TODO: create health endpoints
 async function bootstrap(appModule: any): Promise<NestFastifyApplication> {
-  instrumentation.start();
+  await instrumentation.start();
   const app = await NestFactory.create<NestFastifyApplication>(
     appModule,
     new FastifyAdapter(),
