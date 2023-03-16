@@ -3,6 +3,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.service = void 0;
 const core_1 = require("@nestjs/core");
 const platform_fastify_1 = require("@nestjs/platform-fastify");
 const config_1 = require("@nestjs/config");
@@ -36,8 +37,7 @@ async function bootstrap(appModule) {
     await app.listen(port, '0.0.0.0');
     return app;
 }
-const service = {
+exports.service = {
     start: bootstrap,
 };
-exports.default = service;
 //# sourceMappingURL=main.js.map
