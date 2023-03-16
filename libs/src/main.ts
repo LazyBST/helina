@@ -52,6 +52,6 @@ async function bootstrap(appModule: any): Promise<NestFastifyApplication> {
   return app;
 }
 
-export const service = {
+export const RootService = {
   start: bootstrap,
 };
