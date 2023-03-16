@@ -43,13 +43,16 @@ const exporterOptions = {
     url: COLLECTOR_ENDPOINT,
 };
 const exporter = new exporter_trace_otlp_grpc_1.OTLPTraceExporter(exporterOptions);
-const sdk = new sdk_node_1.NodeSDK({
-    traceExporter: exporter,
-    instrumentations: [(0, auto_instrumentations_node_1.getNodeAutoInstrumentations)()],
-    spanProcessor: new sdk_trace_base_1.BatchSpanProcessor(exporter),
+const provider = new sdk_trace_base_1.BasicTracerProvider({
     resource: new resources_1.Resource({
         [semantic_conventions_1.SemanticResourceAttributes.SERVICE_NAME]: SERVICE_NAME,
     }),
+});
+provider.addSpanProcessor(new sdk_trace_base_1.BatchSpanProcessor(exporter));
+provider.register();
+const sdk = new sdk_node_1.NodeSDK({
+    traceExporter: exporter,
+    instrumentations: [(0, auto_instrumentations_node_1.getNodeAutoInstrumentations)()],
 });
 process.on('SIGTERM', () => {
     sdk
