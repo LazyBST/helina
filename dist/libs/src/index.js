@@ -26,4 +26,5 @@ __exportStar(require("./kafka"), exports);
 __exportStar(require("./redis"), exports);
 __exportStar(require("./interceptors"), exports);
 __exportStar(require("./aws-s3"), exports);
+__exportStar(require("./main"), exports);
 //# sourceMappingURL=index.js.map

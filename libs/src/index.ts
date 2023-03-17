@@ -10,3 +10,4 @@ export * from './kafka';
 export * from './redis';
 export * from './interceptors';
 export * from './aws-s3';
+export * from './main';
