@@ -37,7 +37,8 @@ async function bootstrap(appModule) {
     await app.listen(port, '0.0.0.0');
     return app;
 }
-exports.RootService = {
+const RootService = {
     start: bootstrap,
 };
+exports.RootService = RootService;
 //# sourceMappingURL=main.js.map
