@@ -13,7 +13,10 @@ const interceptors_1 = require("./interceptors");
 const typeorm_1 = require("typeorm");
 const instrumentation_1 = __importDefault(require("./instrumentation"));
 async function bootstrap(appModule) {
-    await instrumentation_1.default.start();
+    await instrumentation_1.default
+        .start()
+        .then(() => console.log('Instrumentation initalization'))
+        .catch((err) => console.error('Error instrumentationing service'));
     const app = await core_1.NestFactory.create(appModule, new platform_fastify_1.FastifyAdapter());
     const db_conn = app.get(typeorm_1.DataSource);
     await db_conn.runMigrations();
