@@ -26,7 +26,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const dotenv = __importStar(require("dotenv"));
 dotenv.config({ path: './environment/.env' });
 const sdk_trace_base_1 = require("@opentelemetry/sdk-trace-base");
-const exporter_trace_otlp_grpc_1 = require("@opentelemetry/exporter-trace-otlp-grpc");
+const exporter_trace_otlp_http_1 = require("@opentelemetry/exporter-trace-otlp-http");
 const resources_1 = require("@opentelemetry/resources");
 const semantic_conventions_1 = require("@opentelemetry/semantic-conventions");
 const sdk_node_1 = require("@opentelemetry/sdk-node");
@@ -42,7 +42,7 @@ if (!COLLECTOR_ENDPOINT) {
 const exporterOptions = {
     url: COLLECTOR_ENDPOINT,
 };
-const exporter = new exporter_trace_otlp_grpc_1.OTLPTraceExporter(exporterOptions);
+const exporter = new exporter_trace_otlp_http_1.OTLPTraceExporter(exporterOptions);
 const provider = new sdk_trace_base_1.BasicTracerProvider({
     resource: new resources_1.Resource({
         [semantic_conventions_1.SemanticResourceAttributes.SERVICE_NAME]: SERVICE_NAME,
