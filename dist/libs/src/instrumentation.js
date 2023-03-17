@@ -48,7 +48,7 @@ const provider = new sdk_trace_base_1.BasicTracerProvider({
         [semantic_conventions_1.SemanticResourceAttributes.SERVICE_NAME]: SERVICE_NAME,
     }),
 });
-provider.addSpanProcessor(new sdk_trace_base_1.BatchSpanProcessor(new sdk_trace_base_1.ConsoleSpanExporter()));
+provider.addSpanProcessor(new sdk_trace_base_1.BatchSpanProcessor(exporter));
 provider.register();
 const sdk = new sdk_node_1.NodeSDK({
     traceExporter: exporter,
