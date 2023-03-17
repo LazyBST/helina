@@ -18,7 +18,6 @@ async function bootstrap(appModule: any): Promise<NestFastifyApplication> {
     .catch((err) =>
       console.error('Error instrumentationing service', JSON.stringify(err)),
     );
-
   const app = await NestFactory.create<NestFastifyApplication>(
     appModule,
     new FastifyAdapter(),
