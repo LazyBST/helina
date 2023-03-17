@@ -16,7 +16,7 @@ async function bootstrap(appModule) {
     await instrumentation_1.default
         .start()
         .then(() => console.log('Instrumentation initalization'))
-        .catch((err) => console.error('Error instrumentationing service'));
+        .catch((err) => console.error('Error instrumentationing service', JSON.stringify(err)));
     const app = await core_1.NestFactory.create(appModule, new platform_fastify_1.FastifyAdapter());
     const db_conn = app.get(typeorm_1.DataSource);
     await db_conn.runMigrations();

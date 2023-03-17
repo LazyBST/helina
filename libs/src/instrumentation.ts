@@ -5,6 +5,7 @@ dotenv.config({ path: './environment/.env' });
 import {
   BatchSpanProcessor,
   BasicTracerProvider,
+  ConsoleSpanExporter,
 } from '@opentelemetry/sdk-trace-base';
 import { OTLPTraceExporter } from '@opentelemetry/exporter-trace-otlp-grpc';
 import { Resource } from '@opentelemetry/resources';
@@ -39,7 +40,7 @@ const provider = new BasicTracerProvider({
   }),
 });
 
-provider.addSpanProcessor(new BatchSpanProcessor(exporter));
+provider.addSpanProcessor(new BatchSpanProcessor(new ConsoleSpanExporter()));
 
 provider.register();
 
