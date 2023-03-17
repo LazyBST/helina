@@ -40,7 +40,7 @@ const provider = new BasicTracerProvider({
   }),
 });
 
-provider.addSpanProcessor(new BatchSpanProcessor(new ConsoleSpanExporter()));
+provider.addSpanProcessor(new BatchSpanProcessor(exporter));
 
 provider.register();
 
