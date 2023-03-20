@@ -5,7 +5,6 @@ dotenv.config({ path: './environment/.env' });
 import {
   BatchSpanProcessor,
   BasicTracerProvider,
-  ConsoleSpanExporter,
 } from '@opentelemetry/sdk-trace-base';
 import { OTLPTraceExporter } from '@opentelemetry/exporter-trace-otlp-http';
 import { Resource } from '@opentelemetry/resources';
@@ -13,12 +12,12 @@ import { SemanticResourceAttributes } from '@opentelemetry/semantic-conventions'
 import { NodeSDK } from '@opentelemetry/sdk-node';
 import { getNodeAutoInstrumentations } from '@opentelemetry/auto-instrumentations-node';
 
-const SERVICE_NAME = process.env.SERVICE_NAME;
+const SERVICE_TRACING_NAME = process.env.SERVICE_TRACING_NAME;
 const COLLECTOR_ENDPOINT = process.env.TRACE_COLLECTOR_ENDPOINT;
 
-if (!SERVICE_NAME) {
+if (!SERVICE_TRACING_NAME) {
   throw new Error(
-    'No service name specified in environment, Please pass SERVICE_NAME as env',
+    'No service name specified in environment, Please pass SERVICE_TRACING_NAME as env',
   );
 }
 
@@ -36,7 +35,7 @@ const exporter = new OTLPTraceExporter(exporterOptions);
 
 const provider = new BasicTracerProvider({
   resource: new Resource({
-    [SemanticResourceAttributes.SERVICE_NAME]: SERVICE_NAME,
+    [SemanticResourceAttributes.SERVICE_NAME]: SERVICE_TRACING_NAME,
   }),
 });
 

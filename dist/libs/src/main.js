@@ -12,7 +12,7 @@ const logger_1 = require("./logger");
 const interceptors_1 = require("./interceptors");
 const typeorm_1 = require("typeorm");
 const instrumentation_1 = __importDefault(require("./instrumentation"));
-async function bootstrap(appModule) {
+async function bootstrap(appModule, serviceName) {
     await instrumentation_1.default
         .start()
         .then(() => console.log('Instrumentation initalization'))
@@ -26,7 +26,6 @@ async function bootstrap(appModule) {
         whitelist: true,
     }));
     app.useGlobalInterceptors(new interceptors_1.LoggingInterceptor(logger));
-    const serviceName = config.get('SERVICE_NAME');
     app.enableVersioning({
         type: common_1.VersioningType.URI,
         defaultVersion: '1',
