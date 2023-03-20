@@ -11,7 +11,10 @@ import { DataSource } from 'typeorm';
 import instrumentation from './instrumentation';
 
 // TODO: create health endpoints
-async function bootstrap(appModule: any): Promise<NestFastifyApplication> {
+async function bootstrap(
+  appModule: any,
+  serviceName: string,
+): Promise<NestFastifyApplication> {
   await instrumentation
     .start()
     .then(() => console.log('Instrumentation initalization'))
@@ -36,8 +39,6 @@ async function bootstrap(appModule: any): Promise<NestFastifyApplication> {
   );
 
   app.useGlobalInterceptors(new LoggingInterceptor(logger));
-
-  const serviceName = config.get<string>('SERVICE_NAME');
 
   app.enableVersioning({
     type: VersioningType.URI,

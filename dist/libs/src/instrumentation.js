@@ -31,10 +31,10 @@ const resources_1 = require("@opentelemetry/resources");
 const semantic_conventions_1 = require("@opentelemetry/semantic-conventions");
 const sdk_node_1 = require("@opentelemetry/sdk-node");
 const auto_instrumentations_node_1 = require("@opentelemetry/auto-instrumentations-node");
-const SERVICE_NAME = process.env.SERVICE_NAME;
+const SERVICE_TRACING_NAME = process.env.SERVICE_TRACING_NAME;
 const COLLECTOR_ENDPOINT = process.env.TRACE_COLLECTOR_ENDPOINT;
-if (!SERVICE_NAME) {
-    throw new Error('No service name specified in environment, Please pass SERVICE_NAME as env');
+if (!SERVICE_TRACING_NAME) {
+    throw new Error('No service name specified in environment, Please pass SERVICE_TRACING_NAME as env');
 }
 if (!COLLECTOR_ENDPOINT) {
     throw new Error('No collector endpoint specified in environment, Please pass TRACE_COLLECTOR_ENDPOINT as env');
@@ -45,7 +45,7 @@ const exporterOptions = {
 const exporter = new exporter_trace_otlp_http_1.OTLPTraceExporter(exporterOptions);
 const provider = new sdk_trace_base_1.BasicTracerProvider({
     resource: new resources_1.Resource({
-        [semantic_conventions_1.SemanticResourceAttributes.SERVICE_NAME]: SERVICE_NAME,
+        [semantic_conventions_1.SemanticResourceAttributes.SERVICE_NAME]: SERVICE_TRACING_NAME,
     }),
 });
 provider.addSpanProcessor(new sdk_trace_base_1.BatchSpanProcessor(exporter));
