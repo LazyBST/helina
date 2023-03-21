@@ -1,3 +1,5 @@
+import instrumentation from './instrumentation';
+
 import { NestFactory } from '@nestjs/core';
 import {
   FastifyAdapter,
@@ -8,7 +10,6 @@ import { ValidationPipe, VersioningType } from '@nestjs/common';
 import { LoggerService } from './logger';
 import { LoggingInterceptor } from './interceptors';
 import { DataSource } from 'typeorm';
-import instrumentation from './instrumentation';
 
 // TODO: create health endpoints
 async function bootstrap(

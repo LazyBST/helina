@@ -4,6 +4,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.RootService = void 0;
+const instrumentation_1 = __importDefault(require("./instrumentation"));
 const core_1 = require("@nestjs/core");
 const platform_fastify_1 = require("@nestjs/platform-fastify");
 const config_1 = require("@nestjs/config");
@@ -11,7 +12,6 @@ const common_1 = require("@nestjs/common");
 const logger_1 = require("./logger");
 const interceptors_1 = require("./interceptors");
 const typeorm_1 = require("typeorm");
-const instrumentation_1 = __importDefault(require("./instrumentation"));
 async function bootstrap(appModule, serviceName) {
     await instrumentation_1.default
         .start()
