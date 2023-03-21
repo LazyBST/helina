@@ -13,6 +13,7 @@ const logger_1 = require("./logger");
 const interceptors_1 = require("./interceptors");
 const typeorm_1 = require("typeorm");
 async function bootstrap(appModule, serviceName) {
+    console.log('I am local helina');
     await instrumentation_1.default
         .start()
         .then(() => console.log('Instrumentation initalization'))
