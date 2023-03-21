@@ -49,6 +49,7 @@ const provider = new sdk_trace_base_1.BasicTracerProvider({
     }),
 });
 provider.addSpanProcessor(new sdk_trace_base_1.BatchSpanProcessor(exporter));
+provider.addSpanProcessor(new sdk_trace_base_1.SimpleSpanProcessor(new sdk_trace_base_1.ConsoleSpanExporter()));
 provider.register();
 const sdk = new sdk_node_1.NodeSDK({
     traceExporter: exporter,
