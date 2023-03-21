@@ -11,6 +11,7 @@ import { Resource } from '@opentelemetry/resources';
 import { SemanticResourceAttributes } from '@opentelemetry/semantic-conventions';
 import { NodeSDK } from '@opentelemetry/sdk-node';
 import { getNodeAutoInstrumentations } from '@opentelemetry/auto-instrumentations-node';
+import { IORedisInstrumentation } from '@opentelemetry/instrumentation-ioredis';
 
 const SERVICE_TRACING_NAME = process.env.SERVICE_TRACING_NAME;
 const COLLECTOR_ENDPOINT = process.env.TRACE_COLLECTOR_ENDPOINT;
@@ -45,7 +46,10 @@ provider.register();
 
 const sdk = new NodeSDK({
   traceExporter: exporter,
-  instrumentations: [getNodeAutoInstrumentations()],
+  instrumentations: [
+    getNodeAutoInstrumentations(),
+    new IORedisInstrumentation(),
+  ],
 });
 
 // gracefully shut down the SDK on process exit
