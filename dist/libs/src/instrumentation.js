@@ -31,6 +31,7 @@ const resources_1 = require("@opentelemetry/resources");
 const semantic_conventions_1 = require("@opentelemetry/semantic-conventions");
 const sdk_node_1 = require("@opentelemetry/sdk-node");
 const auto_instrumentations_node_1 = require("@opentelemetry/auto-instrumentations-node");
+const instrumentation_redis_1 = require("@opentelemetry/instrumentation-redis");
 const SERVICE_TRACING_NAME = process.env.SERVICE_TRACING_NAME;
 const COLLECTOR_ENDPOINT = process.env.TRACE_COLLECTOR_ENDPOINT;
 if (!SERVICE_TRACING_NAME) {
@@ -52,7 +53,7 @@ provider.addSpanProcessor(new sdk_trace_base_1.BatchSpanProcessor(exporter));
 provider.register();
 const sdk = new sdk_node_1.NodeSDK({
     traceExporter: exporter,
-    instrumentations: [(0, auto_instrumentations_node_1.getNodeAutoInstrumentations)()],
+    instrumentations: [(0, auto_instrumentations_node_1.getNodeAutoInstrumentations)(), new instrumentation_redis_1.RedisInstrumentation()],
 });
 process.on('SIGTERM', () => {
     sdk
