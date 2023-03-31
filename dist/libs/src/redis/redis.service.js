@@ -8,21 +8,29 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.RedisService = void 0;
 const common_1 = require("@nestjs/common");
 const config_1 = require("@nestjs/config");
-const ioredis_1 = __importDefault(require("ioredis"));
+const ioredis_1 = require("ioredis");
 let RedisService = class RedisService {
     constructor(config) {
         this.config = config;
-        this._redis = new ioredis_1.default({
-            port: parseInt(config.get('PORT_REDIS')),
-            host: config.get('REDIS_HOST'),
-            password: config.get('REDIS_PASS'),
+        const port = parseInt(config.get('PORT_REDIS'));
+        const host = config.get('REDIS_HOST');
+        const password = config.get('REDIS_PASS');
+        const clusterNodes = [
+            {
+                host,
+                port,
+            },
+        ];
+        this._redis = new ioredis_1.Cluster(clusterNodes, {
+            dnsLookup: (address, callback) => callback(null, address),
+            redisOptions: {
+                password,
+                tls: {},
+            },
         });
     }
     async setRedisKey(key, data, seconds) {

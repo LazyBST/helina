@@ -1,15 +1,28 @@
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import Redis from 'ioredis';
+import { Cluster } from 'ioredis';
 
 @Injectable()
 export class RedisService {
-  private readonly _redis: Redis;
+  private readonly _redis: Cluster;
   constructor(private readonly config: ConfigService) {
-    this._redis = new Redis({
-      port: parseInt(config.get('PORT_REDIS')),
-      host: config.get('REDIS_HOST'),
-      password: config.get('REDIS_PASS'),
+    const port = parseInt(config.get('PORT_REDIS'));
+    const host = config.get('REDIS_HOST');
+    const password = config.get('REDIS_PASS');
+
+    const clusterNodes = [
+      {
+        host,
+        port,
+      },
+    ];
+
+    this._redis = new Cluster(clusterNodes, {
+      dnsLookup: (address, callback) => callback(null, address),
+      redisOptions: {
+        password,
+        tls: {},
+      },
     });
   }
 
