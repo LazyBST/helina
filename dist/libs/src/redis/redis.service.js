@@ -30,6 +30,8 @@ let RedisService = class RedisService {
             redisOptions: {
                 password,
                 tls: {},
+                enableReadyCheck: true,
+                connectTimeout: 10000,
             },
         });
     }

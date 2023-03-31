@@ -22,6 +22,8 @@ export class RedisService {
       redisOptions: {
         password,
         tls: {},
+        enableReadyCheck: true,
+        connectTimeout: 10000,
       },
     });
   }
